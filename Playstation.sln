@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playstation.Domain", "Playstation.Domain\Playstation.Domain.csproj", "{0D1132F3-128A-4D41-9233-9D9DF0F0ECEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playstation.WPF", "Playstation.WPF\Playstation.WPF.csproj", "{5A4D173E-8D11-49F0-8648-E52735BAD460}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0D1132F3-128A-4D41-9233-9D9DF0F0ECEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D1132F3-128A-4D41-9233-9D9DF0F0ECEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D1132F3-128A-4D41-9233-9D9DF0F0ECEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4D173E-8D11-49F0-8648-E52735BAD460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4D173E-8D11-49F0-8648-E52735BAD460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4D173E-8D11-49F0-8648-E52735BAD460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4D173E-8D11-49F0-8648-E52735BAD460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
