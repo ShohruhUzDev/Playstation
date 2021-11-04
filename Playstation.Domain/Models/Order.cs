@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Playstation.Domain.Models
 {
-    public  class Order
+    public class Order
     {
        public int Id { get; set; }
        public DateTime StartTime { get; set; }

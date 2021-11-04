@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Playstation.WPF.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,26 @@ namespace Playstation.WPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void tarif_btn_Click(object sender, RoutedEventArgs e)
+        {
+            TarrifControl tarrifControl = new TarrifControl();
+            Controls_grid.Children.Clear();
+            Controls_grid.Children.Add(tarrifControl);
+        }
+
+        private void device_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DiviceControl control = new DiviceControl();
+            Controls_grid.Children.Clear();
+
+            Controls_grid.Children.Add(control);
+        }
+
+        private void home_btn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

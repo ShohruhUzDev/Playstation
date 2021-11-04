@@ -5,8 +5,140 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Playstation.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Height="650" Width="950">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel 
+            Grid.Row="0"
+            Orientation="Horizontal"
+            VerticalAlignment="Top"
+            >
+            <Button 
+                x:Name="home_btn"
+                Click="home_btn_Click"
+                Height="55" 
+                Margin="15 0 5 10"
+                Background="Transparent"
+                md:ButtonAssist.CornerRadius="10"
+                BorderThickness="0.1">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Width="150" >
+                    <md:PackIcon 
+                        Margin="1 1 10 0 "
+                        HorizontalAlignment="Left"
+                        Kind="Home"
+                        Foreground="Black"
+                        Height="35"
+                        Width="35"/>
+                    <TextBlock
+                        Text="глвная"
+                        Margin="1 0 55 0" 
+                        VerticalAlignment="Bottom"
+                        Foreground=" Black"
+                        Opacity="0.7"
+                        FontSize="22" />
+                </StackPanel>
+            </Button>
+
+            <Button 
+                x:Name="tarif_btn"
+                Click="tarif_btn_Click"
+                Height="55" 
+                Margin="5 0 5 10"
+                Background="Transparent"
+                md:ButtonAssist.CornerRadius="10"
+                BorderThickness="0.1">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Width="179" >
+                    <md:PackIcon 
+                        Margin="1 1 10 0 "
+                        HorizontalAlignment="Left"
+                        Kind="Table"
+                        Foreground="Black"
+                        Height="35"
+                        Width="35"/>
+                    <TextBlock
+                        Text="tarrif"
+                        Margin="1 0 55 0" 
+                        VerticalAlignment="Bottom"
+                        Foreground=" Black"
+                        Opacity="0.7"
+                        FontSize="22" />
+                </StackPanel>
+            </Button>
+
+
+            <Button x:Name="device_btn"
+                    Click="device_btn_Click"
+                Height="55" 
+                Margin="5 0 5 10"
+                Background="Transparent"
+                md:ButtonAssist.CornerRadius="10"
+                BorderThickness="0.1">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Width="179" >
+                    <md:PackIcon 
+                        Margin="1 1 10 0 "
+                        HorizontalAlignment="Left"
+                        Kind="Devices"
+                        Foreground="Black"
+                        Height="35"
+                        Width="35"/>
+                    <TextBlock
+                        Text="устройства"
+                        Margin="1 0 55 0" 
+                        VerticalAlignment="Bottom"
+                        Foreground=" Black"
+                        Opacity="0.7"
+                        FontSize="22" />
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="report_btn"
+                Height="55" 
+                Margin="15 0 15 10"
+                Background="Transparent"
+                md:ButtonAssist.CornerRadius="10"
+                BorderThickness="0.1">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Width="179" >
+                    <md:PackIcon 
+                        Margin="1 1 10 0 "
+                        HorizontalAlignment="Left"
+                        Kind="Analytics"
+                        Foreground="Black"
+                        Height="35"
+                        Width="35"/>
+                    <TextBlock
+                        Text="отчет"
+                        Margin="1 0 55 0" 
+                        VerticalAlignment="Bottom"
+                        Foreground=" Black"
+                        Opacity="0.7"
+                        FontSize="22" />
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+
+        <Grid
+            Grid.Row="1"
+            Name="Controls_grid"
+            >
+            
+        </Grid>
+        
+        
     </Grid>
 </Window>
