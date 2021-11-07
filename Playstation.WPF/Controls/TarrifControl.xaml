@@ -6,6 +6,7 @@
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:Playstation.WPF.Controls"
              mc:Ignorable="d" 
+             Loaded="UserControl_Loaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -28,7 +29,95 @@
         <Grid
             Grid.Row="1"
             >
-            <ListView>
+            <DataGrid 
+                x:Name="tarrif_datagrid"
+                HorizontalGridLinesBrush="DarkGray"
+                RowBackground="LightGray"
+                AlternatingRowBackground="White"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                FontSize="15"
+                VerticalAlignment="Center"
+                      Height="400"
+                      Margin="10 15 10 10" 
+                      BorderThickness="1"
+                      BorderBrush="Black" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Binding="{Binding Id}" Header="Id" Width="100" />
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="100" />
+                    <DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="150" />
+                    <DataGridTextColumn Binding="{Binding TotalMinutes}" Header="Total Minutes" Width="150" />
+                    <DataGridTemplateColumn Header="Action" Width="400">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="0 10 0 0 ">
+                                    <Button x:Name="Delete_btn"
+                                          Margin="0 0 10 0"
+                                            Height="35"
+                                            Click="Delete_btn_Click"
+                                            md:ShadowAssist.ShadowDepth="Depth4"
+                                            Background="#F93E3E"
+                                            md:ButtonAssist.CornerRadius="10"
+                                            BorderThickness="0.1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <md:PackIcon 
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Kind="Trash"
+                                                Foreground="#10bce3"
+                                                Height="25"
+                                                Margin="5"
+                                                Width="25"/>
+                                            <TextBlock  Text="Delete"
+                                                        VerticalAlignment="Center"
+                                                        Height="30"
+                                                        Foreground=" Black"
+                                                        Opacity="0.7"
+                                                                                                                FontSize="18"
+                                                        />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button x:Name="Edit_btn"
+                                           Margin="0 0 10 0"
+                                            Height="35"
+                                            md:ShadowAssist.ShadowDepth="Depth4"
+                                            Background="#FCA130"
+                                            md:ButtonAssist.CornerRadius="10"
+                                            BorderThickness="0.1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <md:PackIcon 
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Kind="Pen"
+                                                Foreground="#1d50d1"
+                                                Height="30"
+                                                Margin="5"
+                                                Width="30"/>
+                                            <TextBlock  Text="Edit"
+                                                        Height="30"
+                                                        VerticalAlignment="Center"
+                                                        Foreground=" Black"
+                                                        Opacity="0.7"
+                                                        
+                                                                                                                FontSize="18" 
+                                                       />
+                                        </StackPanel>
+                                    </Button>
+
+                                    
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <!--<ListView>
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
@@ -177,7 +266,7 @@
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
-            </ListView>
+            </ListView>-->
         </Grid>
 
 

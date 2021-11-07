@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Playstation.WPF.Interfaces;
+using Playstation.WPF.Models;
+using Playstation.WPF.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +22,39 @@ namespace Playstation.WPF.Controls
     /// </summary>
     public partial class CreateDeviceView : Window
     {
-        public CreateDeviceView()
+        IDeviceService _deviceService=new DeviceService();
+        IEnumerable<Device> devices = new List<Device>();
+
+        public CreateDeviceView( )
         {
+           
             InitializeComponent();
+        }
+
+        private async void Save_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if(ipadress_txt.Text!=""&&title_txt.Text!="")
+            {
+                var device = new Device()
+                {
+                    IpAddress = ipadress_txt.Text,
+                    Title = title_txt.Text
+                };
+
+                await _deviceService.CreateDevice(device);
+                MessageBox.Show("Созданный");
+
+            }
+            else
+            {
+                MessageBox.Show("Информация не была введена полностью!");
+
+            }
+
+            //CreateDeviceView createDeviceView = new CreateDeviceView();
+            DiviceControl diviceControl = new DiviceControl();
+            //devices = await _deviceService.GetDevices();
+            // device_datagrid.ItemsSource = devices;
         }
     }
 }

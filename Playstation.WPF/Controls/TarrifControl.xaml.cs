@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Playstation.WPF.Interfaces;
+using Playstation.WPF.Models;
+using Playstation.WPF.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +23,9 @@ namespace Playstation.WPF.Controls
     /// </summary>
     public partial class TarrifControl : UserControl
     {
+        ITarrifService _tarrifService=new TarrifService();
+        IEnumerable<Tarrif> tarrifs = new List<Tarrif>();
+
         public TarrifControl()
         {
             InitializeComponent();
@@ -29,6 +35,40 @@ namespace Playstation.WPF.Controls
         {
             CreateTarrifView createTarrifView = new CreateTarrifView();
             createTarrifView.ShowDialog();
+        }
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            tarrifs = await _tarrifService.GetTarrifs();
+            tarrif_datagrid.ItemsSource = tarrifs;
+        }
+
+        private async void Delete_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = tarrif_datagrid;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            int id = Convert.ToInt32(CellValue);
+
+            MessageBoxResult res = MessageBox.Show("Вы бы хотели его удалить?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+
+            if (res == MessageBoxResult.Yes)
+            {
+
+                await _tarrifService.DeleteTarrif(id);
+
+                MessageBox.Show("Удалено");
+
+
+
+            }
+
+
+            tarrifs = await _tarrifService.GetTarrifs();
+            tarrif_datagrid.ItemsSource = tarrifs;
         }
     }
 }

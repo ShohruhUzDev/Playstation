@@ -1,4 +1,5 @@
 ﻿using Playstation.WPF.Controls;
+using Playstation.WPF.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,13 @@ namespace Playstation.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IDeviceService _deviceService;
+        private readonly ITarrifService _tarrifService;
+
         public MainWindow()
         {
+            //IDeviceService deviceService
+           // _deviceService = deviceService;
             InitializeComponent();
         }
 

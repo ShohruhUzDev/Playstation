@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Playstation.WPF.Interfaces;
+using Playstation.WPF.Models;
+using Playstation.WPF.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,20 +22,41 @@ namespace Playstation.WPF.Controls
     /// </summary>
     public partial class CreateTarrifView : Window
     {
+        ITarrifService _tarrifService = new TarrifService();
+
         public CreateTarrifView()
         {
             InitializeComponent();
         }
 
-        private void Save_btn_Click(object sender, RoutedEventArgs e)
+        private async void Save_btn_Click(object sender, RoutedEventArgs e)
         {
+            string s = amount_txt.Text;
+            
+            if(title_txt.Text!=""&&amount_txt.Text!=""&&totalminutes_txt.Text!="")
+            {
+                Tarrif tarrif = new Tarrif()
+                {
+                    Title=title_txt.Text,
+                    Amount=Convert.ToInt32( amount_txt.Text),
+                    TotalMinutes=Convert.ToInt32(totalminutes_txt.Text)
+                };
+                await _tarrifService.CreateTarrif(tarrif);
+                MessageBox.Show("Созданный");
+                this.Close();
 
+            }
+            else
+            {
+                MessageBox.Show("Информация не была введена полностью!");
+
+            }
         }
 
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)
         {
             CreateTarrifView tarrifView = new CreateTarrifView();
-            this.Hide();
+            this.Close();
         }
     }
 }
