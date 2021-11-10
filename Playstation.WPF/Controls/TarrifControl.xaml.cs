@@ -1,6 +1,7 @@
 ﻿using Playstation.WPF.Interfaces;
 using Playstation.WPF.Models;
 using Playstation.WPF.Services;
+using Playstation.WPF.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Playstation.WPF.Controls
 
         private void create_tarrif_btn_Click(object sender, RoutedEventArgs e)
         {
-            CreateTarrifView createTarrifView = new CreateTarrifView();
+            CreateTarrifView createTarrifView = new CreateTarrifView(this);
             createTarrifView.ShowDialog();
         }
 
@@ -54,6 +55,7 @@ namespace Playstation.WPF.Controls
 
             MessageBoxResult res = MessageBox.Show("Вы бы хотели его удалить?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
+            
 
             if (res == MessageBoxResult.Yes)
             {
@@ -69,6 +71,19 @@ namespace Playstation.WPF.Controls
 
             tarrifs = await _tarrifService.GetTarrifs();
             tarrif_datagrid.ItemsSource = tarrifs;
+        }
+
+        private void Edit_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = tarrif_datagrid;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            int id = Convert.ToInt32(CellValue);
+            
+            UpdateTarrifView updateDeviceView = new UpdateTarrifView(id, this);
+            updateDeviceView.ShowDialog();
         }
     }
 }

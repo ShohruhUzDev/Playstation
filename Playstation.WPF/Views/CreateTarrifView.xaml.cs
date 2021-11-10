@@ -24,38 +24,45 @@ namespace Playstation.WPF.Controls
     {
         ITarrifService _tarrifService = new TarrifService();
 
-        public CreateTarrifView()
+        public TarrifControl TarrifControl { get; }
+
+        public CreateTarrifView(TarrifControl tarrifControl )
         {
             InitializeComponent();
+            TarrifControl = tarrifControl;
         }
 
         private async void Save_btn_Click(object sender, RoutedEventArgs e)
         {
-            string s = amount_txt.Text;
+          
             
-            if(title_txt.Text!=""&&amount_txt.Text!=""&&totalminutes_txt.Text!="")
+
+            if (title_txt.Text!=""&&amount_txt.Text!=""&&totalminutes_txt.Text!=""&&int.TryParse(amount_txt.Text, out int amount)&&int.TryParse(totalminutes_txt.Text, out int minutes))
             {
                 Tarrif tarrif = new Tarrif()
                 {
                     Title=title_txt.Text,
-                    Amount=Convert.ToInt32( amount_txt.Text),
-                    TotalMinutes=Convert.ToInt32(totalminutes_txt.Text)
+                    Amount=amount,
+                    TotalMinutes=minutes
                 };
                 await _tarrifService.CreateTarrif(tarrif);
+               
+                var tarrifs = await _tarrifService.GetTarrifs();
+
+                TarrifControl.tarrif_datagrid.ItemsSource = tarrifs;
                 MessageBox.Show("Созданный");
                 this.Close();
 
             }
             else
             {
-                MessageBox.Show("Информация не была введена полностью!");
+                MessageBox.Show("Информация не была введена полностью или Информация была введена неверно");
 
             }
         }
 
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)
         {
-            CreateTarrifView tarrifView = new CreateTarrifView();
             this.Close();
         }
     }

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Playstation.WPF.Controls
 {
     /// <summary>
-    /// Interaction logic for GlavnayaControl.xaml
+    /// Interaction logic for OrderControl.xaml
     /// </summary>
-    public partial class GlavnayaControl : UserControl
+    public partial class OrderControl : UserControl
     {
-        public GlavnayaControl()
+        public OrderControl()
         {
             InitializeComponent();
         }

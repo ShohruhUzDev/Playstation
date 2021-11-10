@@ -1,4 +1,6 @@
-﻿namespace Playstation.WPF.Models
+﻿using System.Collections.Generic;
+
+namespace Playstation.WPF.Models
 {
     public class Tarrif
     {
@@ -6,6 +8,8 @@
         public double Amount { get; set; }
         public string Title { get; set; }
         public int TotalMinutes { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
     }
 
 

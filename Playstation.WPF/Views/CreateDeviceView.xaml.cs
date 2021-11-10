@@ -24,12 +24,15 @@ namespace Playstation.WPF.Controls
     {
         IDeviceService _deviceService=new DeviceService();
         IEnumerable<Device> devices = new List<Device>();
+        public DiviceControl DiviceControl { get; }
 
-        public CreateDeviceView( )
+        public CreateDeviceView(DiviceControl diviceControl)
         {
            
             InitializeComponent();
+            DiviceControl = diviceControl;
         }
+
 
         private async void Save_btn_Click(object sender, RoutedEventArgs e)
         {
@@ -42,7 +45,11 @@ namespace Playstation.WPF.Controls
                 };
 
                 await _deviceService.CreateDevice(device);
+                devices = await _deviceService.GetDevices();
+              
+                DiviceControl.device_datagrid.ItemsSource = devices;
                 MessageBox.Show("Созданный");
+                this.Close();
 
             }
             else
@@ -50,7 +57,7 @@ namespace Playstation.WPF.Controls
                 MessageBox.Show("Информация не была введена полностью!");
 
             }
-
+          
             //CreateDeviceView createDeviceView = new CreateDeviceView();
             DiviceControl diviceControl = new DiviceControl();
             //devices = await _deviceService.GetDevices();

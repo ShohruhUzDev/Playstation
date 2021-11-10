@@ -4,6 +4,7 @@ using Playstation.WPF.Interfaces;
 using Playstation.WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,8 +48,17 @@ namespace Playstation.WPF.Services
 
         public async Task UpdateDevice(Device device)
         {
-            _dbContext.Update(device);
-            await _dbContext.SaveChangesAsync();
+            using(var dbcontext=new PlaystationDbContext())
+            {
+                
+                dbcontext.Entry(device).Property(p => p.Title).IsModified = true;
+                dbcontext.Entry(device).Property(p => p.IpAddress).IsModified = true;
+
+                //_dbContext.Entry(device).State = EntityState.Modified;
+               // _dbContext.Update(device);
+                await dbcontext.SaveChangesAsync();
+            }
+           
         }
     }
 }

@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Playstation.WPF.Controls.GlavnayaControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Playstation.WPF.Controls"
+             mc:Ignorable="d" 
+             Loaded="UserControl_Loaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DataGrid 
+                x:Name="home_datagrid"
+                HorizontalGridLinesBrush="DarkGray"
+                RowBackground="LightGray"
+                AlternatingRowBackground="White"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                FontSize="15"
+                VerticalAlignment="Center"
+                      Height="450"
+                      Margin="10 15 10 10" 
+                      BorderThickness="1"
+                      BorderBrush="Black" >
+            <DataGrid.Columns>
+                <DataGridTextColumn  Binding="{Binding Id}" Header="Код" Width="80" />
+                <DataGridTextColumn Binding="{Binding Title}" Header="название тарифа" Width="170" />
+                <DataGridTextColumn Binding="{Binding StartTime}" Header="тарифная цена" Width="150" />
+                <DataGridTextColumn Binding="{Binding EndTime}" Header="тарифное время" Width="150" />
+                <DataGridTextColumn Binding="{Binding OrderTarrif}" Header="тарифное время" Width="150" />
+                <DataGridTemplateColumn Header="Действие" Width="400">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="0 10 0 0 ">
+                                <Button x:Name="Delete_btn"
+                                          Margin="0 0 10 0"
+                                            Height="40"
+                                           
+                                            md:ShadowAssist.ShadowDepth="Depth4"
+                                            Background="#F93E3E"
+                                            md:ButtonAssist.CornerRadius="10"
+                                            BorderThickness="0.1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <md:PackIcon 
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Kind="Trash"
+                                                Foreground="#10bce3"
+                                                Height="25"
+                                                Margin="5"
+                                                Width="25"/>
+                                        <TextBlock  Text="Delete"
+                                                        VerticalAlignment="Center"
+                                                        Height="30"
+                                                        Foreground=" Black"
+                                                        Opacity="0.7"
+                                                                                                                FontSize="18"
+                                                        />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="Edit_btn"
+                                           Click="Edit_btn_Click"
+                                       
+                                           Margin="0 0 10 0"
+                                            Height="40"
+                                            md:ShadowAssist.ShadowDepth="Depth4"
+                                            Background="#FCA130"
+                                            md:ButtonAssist.CornerRadius="10"
+                                            BorderThickness="0.1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <md:PackIcon 
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Kind="Create"
+                                                Foreground="#1d50d1"
+                                                Height="30"
+                                                Margin="5"
+                                                Width="30"/>
+                                        <TextBlock  Text="Создавать"
+                                                        Height="30"
+                                                        VerticalAlignment="Center"
+                                                        Foreground=" Black"
+                                                        Opacity="0.7"
+                                                        
+                                                                                                                FontSize="18" 
+                                                       />
+                                    </StackPanel>
+                                </Button>
+
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</UserControl>

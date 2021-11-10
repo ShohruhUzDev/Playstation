@@ -1,14 +1,15 @@
-﻿<Window x:Class="Playstation.WPF.Controls.CreateTarrifView"
+﻿<Window x:Class="Playstation.WPF.Views.UpdateTarrifView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Playstation.WPF.Controls"
-         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
         WindowStyle="ToolWindow" 
+        Closed="Window_Closed"
         Width="600"
         Height="400"
         >
@@ -20,9 +21,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <!--<RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />-->
+           
 
         </Grid.RowDefinitions>
         <TextBlock Text="Создание тарифа"
@@ -31,10 +30,7 @@
                    Margin="10"
                    />
 
-        <!--<TextBlock Grid.Row="1"
-                   Text="Название тарифа"
-                   FontSize="18"
-                   Margin="15 2" />-->
+       
         <TextBox x:Name="title_txt"
                  Grid.Row="1"
                  Height="45"
@@ -46,10 +42,7 @@
                  Text=""
                  Margin="15 2" />
 
-        <!--<TextBlock Grid.Row="3"
-                   FontSize="18"
-                   Text="Стоимость"
-                   Margin="15 2" />-->
+       
         <TextBox
             x:Name="amount_txt"
                   Grid.Row="2"
@@ -61,11 +54,7 @@
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  md:HintAssist.Hint="Стоимость"
                  Margin="15 2" />
-        <!--<TextBlock Grid.Row="5"
-                   
-                   FontSize="18"
-                   Text="Минут"
-                   Margin="15 2" />-->
+       
         <TextBox x:Name="totalminutes_txt"
                  Grid.Row="3"
                  Height="45"
@@ -75,7 +64,7 @@
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  md:HintAssist.Hint="Минут"
                 
-                 Text="{Binding Customer.Email}"
+                
                  Margin="15 2" />
 
 
@@ -94,10 +83,10 @@
                 Background="DarkGreen"
                    FontWeight="DemiBold"
                    FontSize="22"
-                   Content="Создать"
-                   Click="Save_btn_Click"
+                   Content="Сохранить"
+                 Click="Save_btn_Click"
                    >
-               
+
             </Button>
             <Button x:Name="Cancel_btn"
                     Height="50"
@@ -107,9 +96,9 @@
                    FontWeight="DemiBold"
                    FontSize="22"
                    Content="Отмена"
-                   Click="Cancel_btn_Click"
+                Click="Cancel_btn_Click"
                   >
-             
+
 
             </Button>
 

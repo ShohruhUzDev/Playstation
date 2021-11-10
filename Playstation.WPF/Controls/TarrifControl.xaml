@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Playstation.WPF.Controls"
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="550" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -38,16 +38,16 @@
                 IsReadOnly="True"
                 FontSize="15"
                 VerticalAlignment="Center"
-                      Height="400"
+                      Height="500"
                       Margin="10 15 10 10" 
                       BorderThickness="1"
                       BorderBrush="Black" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn  Binding="{Binding Id}" Header="Id" Width="100" />
-                    <DataGridTextColumn Binding="{Binding Amount}" Header="Amount" Width="100" />
-                    <DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="150" />
-                    <DataGridTextColumn Binding="{Binding TotalMinutes}" Header="Total Minutes" Width="150" />
-                    <DataGridTemplateColumn Header="Action" Width="400">
+                    <DataGridTextColumn  Binding="{Binding Id}" Header="Код" Width="80" />
+                    <DataGridTextColumn Binding="{Binding Title}" Header="название тарифа" Width="170" />
+                    <DataGridTextColumn Binding="{Binding Amount}" Header="тарифная цена" Width="150" />
+                    <DataGridTextColumn Binding="{Binding TotalMinutes}" Header="тарифное время" Width="150" />
+                    <DataGridTemplateColumn Header="Действие" Width="400">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel
@@ -81,6 +81,7 @@
                                     </Button>
 
                                     <Button x:Name="Edit_btn"
+                                            Click="Edit_btn_Click"
                                            Margin="0 0 10 0"
                                             Height="35"
                                             md:ShadowAssist.ShadowDepth="Depth4"

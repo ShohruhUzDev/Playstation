@@ -49,7 +49,18 @@ namespace Playstation.WPF
 
         private void home_btn_Click(object sender, RoutedEventArgs e)
         {
+            GlavnayaControl control = new GlavnayaControl();
+            Controls_grid.Children.Clear();
 
+            Controls_grid.Children.Add(control);
+        }
+
+        private void report_btn_Click(object sender, RoutedEventArgs e)
+        {
+            OrderControl control = new OrderControl();
+            Controls_grid.Children.Clear();
+
+            Controls_grid.Children.Add(control);
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Playstation.WPF.Interfaces;
 using Playstation.WPF.Models;
 using Playstation.WPF.Services;
+using Playstation.WPF.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,21 +32,13 @@ namespace Playstation.WPF.Controls
         {
             
             InitializeComponent();
-            //Task.Run(async ()
-            //    =>
-            //{
-            //    devices = await _deviceService.GetDevices();
-            //    device_datagrid.ItemsSource = devices;
-
-            //});
-           
-
+            
 
         }
 
         private void create_device_btn_Click(object sender, RoutedEventArgs e)
         {
-            CreateDeviceView createDevice = new CreateDeviceView();
+            CreateDeviceView createDevice = new CreateDeviceView(this);
             createDevice.ShowDialog();
          }
 
@@ -82,6 +76,19 @@ namespace Playstation.WPF.Controls
 
             devices = await _deviceService.GetDevices();
             device_datagrid.ItemsSource = devices;
+        }
+
+        private void Edit_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = device_datagrid;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            int id = Convert.ToInt32(CellValue);
+           
+            UpdateDeviceView updateDeviceView = new UpdateDeviceView(id, this);
+            updateDeviceView.ShowDialog();
         }
     }
 }

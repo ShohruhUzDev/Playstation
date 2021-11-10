@@ -20,34 +20,61 @@ namespace Playstation.WPF.Services
         }
         public async Task<Tarrif> CreateTarrif(Tarrif tarrif)
         {
-            _dbContext.Add(tarrif);
-            await  _dbContext.SaveChangesAsync();
-            return tarrif;
+            using (var dbContext = new PlaystationDbContext())
+            {
+                dbContext.Add(tarrif);
+                await dbContext.SaveChangesAsync();
+                return tarrif;
+            }
+
+               
         }
 
         public async Task DeleteTarrif(int id)
         {
-            var tarrif = await _dbContext.Tarrifs.FirstOrDefaultAsync(x => x.Id == id);
-            _dbContext.Remove(tarrif);
-           await _dbContext.SaveChangesAsync();
+            using (var dbContext = new PlaystationDbContext())
+            {
+                var tarrif = await dbContext.Tarrifs.FirstOrDefaultAsync(x => x.Id == id);
+                dbContext.Remove(tarrif);
+                await dbContext.SaveChangesAsync();
+            }
+
+             
         }
 
         public async Task<Tarrif> GetByIdTarrif(int id)
         {
-            var tarrif = await _dbContext.Tarrifs.FirstOrDefaultAsync(x => x.Id == id);
-            return tarrif;
+            using (var dbContext = new PlaystationDbContext())
+            {
+                var tarrif = await dbContext.Tarrifs.FirstOrDefaultAsync(x => x.Id == id);
+                return tarrif;
+            }
+               
         }
 
         public async Task<IEnumerable<Tarrif>> GetTarrifs()
         {
-            var tarrifs = await _dbContext.Tarrifs.ToListAsync();
-            return tarrifs;
+            using(var dbContext=new PlaystationDbContext())
+            {
+                var tarrifs = await dbContext.Tarrifs.ToListAsync();
+                return tarrifs;
+            }
+           
         }
 
         public async Task UpdateTarrif(Tarrif tarrif)
         {
-            _dbContext.Update(tarrif);
-           await _dbContext.SaveChangesAsync();
+            using( var dbContext=new PlaystationDbContext())
+            {
+                dbContext.Entry(tarrif).Property(p => p.Title).IsModified = true;
+                dbContext.Entry(tarrif).Property(p => p.Amount).IsModified = true;
+                dbContext.Entry(tarrif).Property(p => p.TotalMinutes).IsModified = true;
+
+                
+               
+                await dbContext.SaveChangesAsync();
+            }
+           
         }
     }
 }
