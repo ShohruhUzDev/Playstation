@@ -24,25 +24,29 @@ namespace Playstation.WPF.Views
     public partial class CreateOrderView : Window
     {
         ITarrifService tarrifService = new TarrifService();
+        IDeviceService deviceService = new DeviceService();
         IOrderService orderService = new OrderService();
         List<TarrifForCBX> tarrifFors = new List<TarrifForCBX>();
+        public Button createbtn;
+        public int id;
 
-        public GlavnayaControl GlavnayaControl { get; }
-
-        public CreateOrderView(GlavnayaControl glavnayaControl)
+        public CreateOrderView(int id,Button button)
         {
             InitializeComponent();
-            GlavnayaControl = glavnayaControl;
+            this.id = id;
+            createbtn = button;
         }
 
         private void tarrif_btn_Click(object sender, RoutedEventArgs e)
         {
             time_grid.Visibility = Visibility.Visible;
+            time_txt.Visibility = Visibility.Visible;
         }
 
         private void vip_btn_Click(object sender, RoutedEventArgs e)
         {
-            time_grid.Visibility = Visibility.Hidden;
+            time_grid.Visibility = Visibility.Visible;
+            time_txt.Visibility = Visibility.Hidden;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -65,15 +69,27 @@ namespace Playstation.WPF.Views
             tarrif_cbx.SelectedValuePath = "Id";
         }
 
-        private void Save_btn_Click(object sender, RoutedEventArgs e)
+        private async void Save_btn_Click(object sender, RoutedEventArgs e)
         {
-            var order = new Order()
-            {
-                StartTime = DateTime.Now,
-                EndTime = Convert.ToDateTime(time_txt.Text)
-            };
-           
 
+            var device = await deviceService.GetByIdDevice(id);
+
+            int tarrifid;
+            bool b=int.TryParse(tarrif_cbx.SelectedValue.ToString(), out tarrifid);
+
+            var order = new Order()
+            { 
+               DeviceId=id,
+               StartTime=DateTime.Now,
+                TarrifId=tarrifid,
+                
+            };
+            await orderService.CreateOrder(order);
+            this.Close();
+            
+
+
+            createbtn.IsEnabled = false;
         }
 
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)

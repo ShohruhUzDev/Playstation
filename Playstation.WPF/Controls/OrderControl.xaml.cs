@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Playstation.WPF.Interfaces;
+using Playstation.WPF.Models;
+using Playstation.WPF.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,19 @@ namespace Playstation.WPF.Controls
     /// </summary>
     public partial class OrderControl : UserControl
     {
+        IOrderService orderService = new OrderService();
+        IEnumerable<Order> orders = new List<Order>();
+
         public OrderControl()
         {
             InitializeComponent();
+        }
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            orders = await orderService.GetOrders();
+            order_datagrid.ItemsSource = orders;
+
         }
     }
 }

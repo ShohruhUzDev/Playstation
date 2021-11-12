@@ -29,6 +29,7 @@ namespace Playstation.WPF.Controls
 
         public TarrifControl()
         {
+       
             InitializeComponent();
         }
 

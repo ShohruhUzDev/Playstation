@@ -20,55 +20,55 @@ using System.Windows.Shapes;
 namespace Playstation.WPF.Controls
 {
     /// <summary>
-    /// Interaction logic for HomeControl.xaml
+    /// Interaction logic for GlavnayaControl.xaml
     /// </summary>
-    public partial class HomeControl : UserControl
+    public partial class GlavnayaControl : UserControl
     {
         ITarrifService _tarrifService = new TarrifService();
         IDeviceService _deviceService = new DeviceService();
         IOrderService _orderService = new OrderService();
         List<OrderDevice> orders = new List<OrderDevice>();
-        public Button CreateButton;
-        public HomeControl()
+
+        public GlavnayaControl()
         {
             InitializeComponent();
+        }
+        private void Edit_btn_Click(object sender, RoutedEventArgs e)
+        {
+           
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             var devices = await _deviceService.GetDevices();
-            foreach (var i in devices)
+            foreach(var i in devices)
             {
                 orders.Add(new OrderDevice()
-                {
-                    Id = i.Id,
-                    Title = i.Title
+                { 
+                Id=i.Id,
+                Title=i.Title
                 });
 
             }
-            home_datagrid.ItemsSource = orders;
-
+          //  home_datagrid.ItemsSource = orders;
         }
 
         private void Create_btn_Click(object sender, RoutedEventArgs e)
         {
-            DataGrid dataGrid = home_datagrid;
-            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
-            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+        //  //  DataGrid dataGrid = home_datagrid;
+        //    DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+        //    DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+        //    string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-            int id = Convert.ToInt32(CellValue);
+        //    int id = Convert.ToInt32(CellValue);
 
-            CreateButton = (Button)sender;
-
-            CreateOrderView createOrder = new CreateOrderView(id, (Button)sender);
-            createOrder.ShowDialog();
-
+        //    CreateOrderView createOrder = new CreateOrderView(id, (Button)sender);
+        //    createOrder.ShowDialog();
         }
 
         private void finish_btn_Click(object sender, RoutedEventArgs e)
         {
-            CreateButton.IsEnabled = true;
+          
         }
     }
 }

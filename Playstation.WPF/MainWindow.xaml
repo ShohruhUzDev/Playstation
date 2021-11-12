@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Playstation.WPF"
         mc:Ignorable="d"
         WindowState="Maximized"
+        Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Height="650" Width="950">
