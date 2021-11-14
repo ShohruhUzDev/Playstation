@@ -7,7 +7,8 @@ namespace Playstation.WPF.Models
 {
     public class Order
     {
-       public int Id { get; set; }
+       // [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
        public DateTime StartTime { get; set; }
        public DateTime EndTime { get; set; }
        public double Amount { get; set; }

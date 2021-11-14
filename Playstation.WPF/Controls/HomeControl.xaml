@@ -24,10 +24,10 @@
                       BorderBrush="Black" >
             <DataGrid.Columns>
                 <DataGridTextColumn  Binding="{Binding Id}" Header="Код" Width="80" />
-                <DataGridTextColumn Binding="{Binding Title}" Header="название тарифа" Width="200" />
-                <DataGridTextColumn Binding="{Binding StartTime}" Header="тарифная цена" Width="170" />
-                <DataGridTextColumn Binding="{Binding EndTime}" Header="тарифное время" Width="170" />
-                <DataGridTextColumn Binding="{Binding OrderTarrif}" Header="тарифное время" Width="150" />
+                <DataGridTextColumn Binding="{Binding Title}" Header="название устройство" Width="200" />
+                <DataGridTextColumn Binding="{Binding StartTime}" Header="Начальное время" Width="170" />
+                <DataGridTextColumn Binding="{Binding EndTime}" Header="Время окончания" Width="170" />
+                <DataGridTextColumn Binding="{Binding OrderTarrif}" Header="Тариф" Width="150" />
                 <DataGridTemplateColumn Header="Действие" Width="550">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -26,7 +26,7 @@
             <RowDefinition Height="auto" />-->
 
         </Grid.RowDefinitions>
-        <TextBlock Text="Создание тарифа"
+        <TextBlock Text="Создание заказ"
                    FontSize="22"
                    FontWeight="DemiBold"
                    Margin="10"

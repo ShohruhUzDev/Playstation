@@ -27,7 +27,7 @@
                 <DataGridTextColumn Binding="{Binding Title}" Header="название тарифа" Width="170" />
                 <DataGridTextColumn Binding="{Binding Amount}" Header="тарифная цена" Width="150" />
                 <DataGridTextColumn Binding="{Binding TotalMinutes}" Header="тарифное время" Width="150" />
-                <DataGridTemplateColumn Header="Действие" Width="400">
+                <!--<DataGridTemplateColumn Header="Действие" Width="400">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel
@@ -91,7 +91,7 @@
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                </DataGridTemplateColumn>-->
 
 
             </DataGrid.Columns>

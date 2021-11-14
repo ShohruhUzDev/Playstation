@@ -27,7 +27,7 @@ namespace Playstation.WPF.Controls
         ITarrifService _tarrifService = new TarrifService();
         IDeviceService _deviceService = new DeviceService();
         IOrderService _orderService = new OrderService();
-        List<OrderDevice> orders = new List<OrderDevice>();
+        public   List<OrderDevice> orders = new List<OrderDevice>();
         public Button CreateButton;
         public HomeControl()
         {
@@ -42,7 +42,8 @@ namespace Playstation.WPF.Controls
                 orders.Add(new OrderDevice()
                 {
                     Id = i.Id,
-                    Title = i.Title
+                    Title = i.Title,
+                    OrderTarrif=null
                 });
 
             }
@@ -61,14 +62,23 @@ namespace Playstation.WPF.Controls
 
             CreateButton = (Button)sender;
 
-            CreateOrderView createOrder = new CreateOrderView(id, (Button)sender);
+            CreateOrderView createOrder = new CreateOrderView(id, (Button)sender, this);
             createOrder.ShowDialog();
 
         }
 
         private void finish_btn_Click(object sender, RoutedEventArgs e)
         {
-            CreateButton.IsEnabled = true;
+
+            DataGrid dataGrid = home_datagrid;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            int id = Convert.ToInt32(CellValue);
+            FinishOrderView finishOrderView = new FinishOrderView(CreateButton, id);
+            finishOrderView.ShowDialog();
+          
         }
     }
 }

@@ -68,7 +68,7 @@
                         Height="35"
                         Width="35"/>
                     <TextBlock
-                        Text="tarrif"
+                        Text="Тариф"
                         Margin="1 0 55 0" 
                         VerticalAlignment="Bottom"
                         Foreground=" Black"

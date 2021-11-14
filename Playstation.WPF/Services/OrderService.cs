@@ -45,7 +45,9 @@ namespace Playstation.WPF.Services
         {
             using (var dbContext=new PlaystationDbContext())
             {
-                var order = dbContext.Orders.FirstOrDefaultAsync(x => x.Id == id);
+                var order = dbContext.Orders.Include(i=>i.Tarrif).
+                    Include(j=>j.Device).
+                    FirstOrDefaultAsync(x => x.Id == id);
                 return order;
             }
            
@@ -55,7 +57,9 @@ namespace Playstation.WPF.Services
         {
             using(var dbContext=new PlaystationDbContext())
             {
-                var orderes = await dbContext.Orders.ToListAsync();
+                var orderes = await dbContext.Orders.
+                    Include(i => i.Tarrif).
+                    Include(j => j.Device).ToListAsync();
                 return orderes;
             }
           
