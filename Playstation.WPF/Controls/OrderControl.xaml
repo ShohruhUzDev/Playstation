@@ -27,7 +27,7 @@
                 <DataGridTextColumn Binding="{Binding Title}" Header="название тарифа" Width="170" />
                 <DataGridTextColumn Binding="{Binding Amount}" Header="тарифная цена" Width="150" />
                 <DataGridTextColumn Binding="{Binding TotalMinutes}" Header="тарифное время" Width="150" />
-                <!--<DataGridTemplateColumn Header="Действие" Width="400">
+                <DataGridTemplateColumn Header="Действие" Width="400">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel
@@ -36,7 +36,7 @@
                                 <Button x:Name="Delete_btn"
                                           Margin="0 0 10 0"
                                             Height="35"
- 
+                                            Click="Delete_btn_Click"
                                             md:ShadowAssist.ShadowDepth="Depth4"
                                             Background="#F93E3E"
                                             md:ButtonAssist.CornerRadius="10"
@@ -91,7 +91,7 @@
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
 
 
             </DataGrid.Columns>

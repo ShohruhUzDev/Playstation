@@ -25,13 +25,14 @@
             <DataGrid.Columns>
                 <DataGridTextColumn  Binding="{Binding Id}" Header="Код" Width="80" />
                 <DataGridTextColumn Binding="{Binding Title}" Header="название устройство" Width="200" />
-                <DataGridTextColumn Binding="{Binding StartTime}" Header="Начальное время" Width="170" />
-                <DataGridTextColumn Binding="{Binding EndTime}" Header="Время окончания" Width="170" />
+                <DataGridTextColumn Binding="{Binding StartTime, StringFormat='{}{0:HH:mm}'}" Header="Начальное время" Width="170" />
+                <DataGridTextColumn Binding="{Binding EndTime, StringFormat='{}{0:HH:mm}'}" Header="Время окончания" Width="170" />
                 <DataGridTextColumn Binding="{Binding OrderTarrif}" Header="Тариф" Width="150" />
                 <DataGridTemplateColumn Header="Действие" Width="550">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel
+                                x:Name="buttons"
                                     Orientation="Horizontal"
                                     Margin="0 10 0 0 ">
 

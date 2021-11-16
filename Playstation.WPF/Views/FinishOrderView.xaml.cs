@@ -34,9 +34,92 @@ namespace Playstation.WPF.Views
             InitializeComponent();
         }
 
-        private void Ok_btn_Click(object sender, RoutedEventArgs e)
+        private async void Ok_btn_Click(object sender, RoutedEventArgs e)
         {
-            creaeButton.IsEnabled = true;
+
+            var orders = await orderService.GetOrders();
+            var neworders = orders.OrderByDescending(x => x.StartTime).FirstOrDefault(i => i.DeviceId == _deviceid);
+
+
+            int minute;
+            if (neworders.Tarrif.TarrifType == TarrifType.Simple)
+            {
+                if (neworders.EndTime.Minute >= neworders.StartTime.Minute)
+                {
+                    minute = neworders.EndTime.Minute - neworders.StartTime.Minute;
+                }
+                else
+                {
+                    minute = neworders.EndTime.Minute + 60 - neworders.StartTime.Minute;
+                }
+
+                //hour
+                if (neworders.EndTime.Hour > neworders.StartTime.Hour)
+                {
+                    minute = (neworders.EndTime.Hour - neworders.StartTime.Hour) * 60 + minute;
+                }
+
+                int amount = (int)((Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
+
+                var updateorder = new Order()
+                {
+                    Id = neworders.Id,
+                    Closed = false
+
+                };
+
+
+                await orderService.UpdateOrder(updateorder);
+
+            }
+
+
+            if (neworders.Tarrif.TarrifType == TarrifType.Vip)
+            {
+
+                var nowdatetime = DateTime.Now.Hour;
+                if (DateTime.Now.Minute >= neworders.StartTime.Minute)
+                {
+                    minute = DateTime.Now.Minute - neworders.StartTime.Minute;
+                }
+                else
+                {
+                    minute = DateTime.Now.Minute + 60 - neworders.StartTime.Minute;                    nowdatetime= DateTime.Now.Hour-1;                }
+
+                //hour
+                if (nowdatetime > neworders.StartTime.Hour)
+                {
+                    minute = (nowdatetime - neworders.StartTime.Hour) * 60 + minute;
+                }
+
+                int amount = (int)((Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
+
+
+                var updateorder = new Order()
+                {
+                    Id = neworders.Id,
+                    StartTime = neworders.StartTime,
+                    Amount = amount,
+                    TarrifId = neworders.TarrifId,
+                    DeviceId = neworders.DeviceId,
+                    EndTime = DateTime.Now,
+                    Closed = false
+
+                };
+
+
+                await orderService.UpdateOrder(updateorder);
+
+            }
+
+
+
+
+
+
+
+
+            // creaeButton.IsEnabled = true;
             this.Close();
            
         }
@@ -46,33 +129,87 @@ namespace Playstation.WPF.Views
             
             var orders = await orderService.GetOrders();
             var neworders= orders.OrderByDescending(x=>x.StartTime).FirstOrDefault(i=>i.DeviceId== _deviceid);
-            int minute;
-
-            //minute
-           if(neworders.EndTime.Minute>=neworders.StartTime.Minute)
+            
+            if(neworders.Tarrif.TarrifType==TarrifType.Simple)
             {
-               minute= neworders.EndTime.Minute - neworders.StartTime.Minute;
+                int minute;
+
+                //minute
+                if (neworders.EndTime.Minute >= neworders.StartTime.Minute)
+                {
+                    minute = neworders.EndTime.Minute - neworders.StartTime.Minute;
+                }
+                else
+                {
+                    minute = neworders.EndTime.Minute + 60 - neworders.StartTime.Minute;
+                }
+
+                //hour
+                if (neworders.EndTime.Hour > neworders.StartTime.Hour)
+                {
+                    minute = (neworders.EndTime.Hour - neworders.StartTime.Hour) * 60 + minute;
+                }
+
+
+
+
+                if (neworders != null)
+                {
+                    titleDevice_txt.Text = neworders.Device.Title;
+                    amount_txt.Text = neworders.Amount.ToString();
+                    totalminutes_txt.Text = minute.ToString();
+                }
             }
-           else
+
+
+            if (neworders.Tarrif.TarrifType == TarrifType.Vip)
             {
-                minute = neworders.EndTime.Minute + 60 - neworders.StartTime.Minute;
+                int minute;
+
+                //minute
+                if (DateTime.Now.Minute >= neworders.StartTime.Minute)
+                {
+                    minute = DateTime.Now.Minute - neworders.StartTime.Minute;
+                }
+                else
+                {
+                    minute = DateTime.Now.Minute + 60 - neworders.StartTime.Minute;
+                }
+
+                //hour
+                if (DateTime.Now.Hour > neworders.StartTime.Hour)
+                {
+                    minute = (DateTime.Now.Hour - neworders.StartTime.Hour) * 60 + minute;
+                }
+
+                int amount =(int)( (Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
+
+
+
+                //var updateorder = new Order()
+                //{
+                //    Id = neworders.Id,
+                //    StartTime = neworders.StartTime,
+                //    Amount = amount,
+                //    TarrifId = neworders.TarrifId,
+                //    DeviceId = neworders.DeviceId,
+                //    EndTime = DateTime.Now,
+                //    Closed = false
+
+                //};
+
+
+                //await orderService.UpdateOrder(updateorder);
+
+
+                if (neworders != null)
+                {
+                    titleDevice_txt.Text = neworders.Device.Title;
+                    amount_txt.Text = amount.ToString();
+                    totalminutes_txt.Text = minute.ToString();
+                }
             }
 
-           //hour
-           if(neworders.EndTime.Hour>neworders.StartTime.Hour)
-            {
-                minute = (neworders.EndTime.Hour - neworders.StartTime.Hour) * 60 + minute;
-            }
-
-
-
-
-            if(neworders != null)
-            {
-                titleDevice_txt.Text = neworders.Device.Title;
-                amount_txt.Text = neworders.Amount.ToString();
-                totalminutes_txt.Text = minute.ToString();
-            }
         }
     }
 }

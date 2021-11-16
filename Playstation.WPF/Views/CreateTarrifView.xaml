@@ -20,8 +20,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <!--<RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <!--<RowDefinition Height="auto" />
             <RowDefinition Height="auto" />-->
 
         </Grid.RowDefinitions>
@@ -45,14 +45,30 @@
                  md:HintAssist.Hint="Название тарифа"
                  Text=""
                  Margin="15 2" />
+        <StackPanel
+            Grid.Row="2"
+            Orientation="Horizontal">
+            <RadioButton
+               x:Name="viptype_rdbtn"
+                Margin="10"
+                Style="{StaticResource MaterialDesignAccentRadioButton}"
+                Height="45">
+                Vip
 
-        <!--<TextBlock Grid.Row="3"
-                   FontSize="18"
-                   Text="Стоимость"
-                   Margin="15 2" />-->
+            </RadioButton>
+            <RadioButton
+               x:Name="simpletype_rdbtn"
+             
+            Height="45">
+                Simple
+
+            </RadioButton>
+        </StackPanel>
+
+        
         <TextBox
             x:Name="amount_txt"
-                  Grid.Row="2"
+                  Grid.Row="3"
                  Height="45"
                  
                  Width="350"
@@ -67,7 +83,7 @@
                    Text="Минут"
                    Margin="15 2" />-->
         <TextBox x:Name="totalminutes_txt"
-                 Grid.Row="3"
+                 Grid.Row="4"
                  Height="45"
                  Width="350"
                  HorizontalAlignment="Left"
@@ -82,7 +98,7 @@
 
         <Grid 
             VerticalAlignment="Bottom"
-            Grid.Row="4" >
+            Grid.Row="5" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*"  />
@@ -90,7 +106,7 @@
             <Button 
                 x:Name="Save_btn"
                    Height="50"
-                   Margin="0 90 5 0"
+                   Margin="0 50 5 0"
                 Background="DarkGreen"
                    FontWeight="DemiBold"
                    FontSize="22"
@@ -101,7 +117,7 @@
             </Button>
             <Button x:Name="Cancel_btn"
                     Height="50"
-                    Margin="5 90 0 0"
+                    Margin="5 50 0 0"
                     Grid.Column="1"
                     Background="DarkRed"
                    FontWeight="DemiBold"

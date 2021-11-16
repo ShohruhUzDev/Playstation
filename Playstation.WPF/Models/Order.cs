@@ -7,11 +7,11 @@ namespace Playstation.WPF.Models
 {
     public class Order
     {
-       // [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+      
+       public int Id { get; set; }
        public DateTime StartTime { get; set; }
        public DateTime EndTime { get; set; }
-       public double Amount { get; set; }
+       public int Amount { get; set; }
        public bool Closed { get; set; }
        public int DeviceId { get; set; }
        public Device Device { get; set; }

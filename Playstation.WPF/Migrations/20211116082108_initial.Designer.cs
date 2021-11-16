@@ -10,7 +10,7 @@ using Playstation.WPF.Context;
 namespace Playstation.WPF.Migrations
 {
     [DbContext(typeof(PlaystationDbContext))]
-    [Migration("20211107053528_initial")]
+    [Migration("20211116082108_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,9 +61,14 @@ namespace Playstation.WPF.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TarrifId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DeviceId");
+
+                    b.HasIndex("TarrifId");
 
                     b.ToTable("Orders");
                 });
@@ -77,6 +82,9 @@ namespace Playstation.WPF.Migrations
 
                     b.Property<double>("Amount")
                         .HasColumnType("float");
+
+                    b.Property<int>("TarrifType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -97,10 +105,23 @@ namespace Playstation.WPF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Playstation.WPF.Models.Tarrif", "Tarrif")
+                        .WithMany("Orders")
+                        .HasForeignKey("TarrifId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Device");
+
+                    b.Navigation("Tarrif");
                 });
 
             modelBuilder.Entity("Playstation.WPF.Models.Device", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Playstation.WPF.Models.Tarrif", b =>
                 {
                     b.Navigation("Orders");
                 });

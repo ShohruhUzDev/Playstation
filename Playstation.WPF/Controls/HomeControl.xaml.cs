@@ -29,6 +29,7 @@ namespace Playstation.WPF.Controls
         IOrderService _orderService = new OrderService();
         public   List<OrderDevice> orders = new List<OrderDevice>();
         public Button CreateButton;
+        public int deviceId;
         public HomeControl()
         {
             InitializeComponent();
@@ -37,14 +38,70 @@ namespace Playstation.WPF.Controls
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             var devices = await _deviceService.GetDevices();
+            var orders1 = await _orderService.GetOrders();
+
+
+
+          
             foreach (var i in devices)
             {
-                orders.Add(new OrderDevice()
+                var deviceorder = orders1.OrderByDescending(i => i.StartTime).FirstOrDefault(x => x.DeviceId == i.Id);
+                if(deviceorder is null)
                 {
-                    Id = i.Id,
-                    Title = i.Title,
-                    OrderTarrif=null
-                });
+                    orders.Add(new OrderDevice()
+                    {
+                        Id = i.Id,
+                        Title = i.Title,
+                        StartTime=DateTime.Now,
+                        OrderTarrif = null
+                    });
+                }
+                else
+                {
+                    if (deviceorder.Closed)
+                    {
+                        if(deviceorder.Tarrif.TarrifType==TarrifType.Simple)
+                        {
+                            orders.Add(new OrderDevice()
+                            {
+                                Id = i.Id,
+                                Title = i.Title,
+                                StartTime = deviceorder.StartTime,
+                                EndTime=deviceorder.EndTime,
+                                OrderTarrif = deviceorder.Tarrif.Title
+                            });
+                        }
+                        else
+                        { 
+                            if(deviceorder.Tarrif.TarrifType==TarrifType.Vip)
+                            {
+                                orders.Add(new OrderDevice()
+                                {
+                                    Id = i.Id,
+                                    Title = i.Title,
+                                    StartTime = deviceorder.StartTime,
+                                    OrderTarrif = deviceorder.Tarrif.Title
+                                });
+                            }
+                           
+
+                        }
+                        
+                    }
+                    else
+                    {
+                        orders.Add(new OrderDevice()
+                        {
+                            Id = i.Id,
+                            Title = i.Title,
+                            StartTime=DateTime.Now,
+                            OrderTarrif = null
+                        });
+                    }
+                }
+               
+               
+                
 
             }
             home_datagrid.ItemsSource = orders;
@@ -58,11 +115,11 @@ namespace Playstation.WPF.Controls
             DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
             string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-            int id = Convert.ToInt32(CellValue);
+            deviceId = Convert.ToInt32(CellValue);
 
             CreateButton = (Button)sender;
 
-            CreateOrderView createOrder = new CreateOrderView(id, (Button)sender, this);
+            CreateOrderView createOrder = new CreateOrderView(deviceId, (Button)sender, this);
             createOrder.ShowDialog();
 
         }
@@ -75,8 +132,8 @@ namespace Playstation.WPF.Controls
             DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
             string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
-            int id = Convert.ToInt32(CellValue);
-            FinishOrderView finishOrderView = new FinishOrderView(CreateButton, id);
+            deviceId = Convert.ToInt32(CellValue);
+            FinishOrderView finishOrderView = new FinishOrderView(CreateButton, deviceId);
             finishOrderView.ShowDialog();
           
         }

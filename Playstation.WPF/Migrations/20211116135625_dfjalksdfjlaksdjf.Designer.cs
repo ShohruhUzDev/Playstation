@@ -10,8 +10,8 @@ using Playstation.WPF.Context;
 namespace Playstation.WPF.Migrations
 {
     [DbContext(typeof(PlaystationDbContext))]
-    [Migration("20211108100325_addonetomany")]
-    partial class addonetomany
+    [Migration("20211116135625_dfjalksdfjlaksdjf")]
+    partial class dfjalksdfjlaksdjf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,8 +46,8 @@ namespace Playstation.WPF.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Closed")
                         .HasColumnType("bit");
@@ -82,6 +82,9 @@ namespace Playstation.WPF.Migrations
 
                     b.Property<double>("Amount")
                         .HasColumnType("float");
+
+                    b.Property<int>("TarrifType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");

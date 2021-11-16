@@ -29,7 +29,8 @@ namespace Playstation.WPF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TotalMinutes = table.Column<int>(type: "int", nullable: false)
+                    TotalMinutes = table.Column<int>(type: "int", nullable: false),
+                    TarrifType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,7 +47,8 @@ namespace Playstation.WPF.Migrations
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<double>(type: "float", nullable: false),
                     Closed = table.Column<bool>(type: "bit", nullable: false),
-                    DeviceId = table.Column<int>(type: "int", nullable: false)
+                    DeviceId = table.Column<int>(type: "int", nullable: false),
+                    TarrifId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,12 +59,23 @@ namespace Playstation.WPF.Migrations
                         principalTable: "Devices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Tarrifs_TarrifId",
+                        column: x => x.TarrifId,
+                        principalTable: "Tarrifs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_DeviceId",
                 table: "Orders",
                 column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_TarrifId",
+                table: "Orders",
+                column: "TarrifId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -71,10 +84,10 @@ namespace Playstation.WPF.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Tarrifs");
+                name: "Devices");
 
             migrationBuilder.DropTable(
-                name: "Devices");
+                name: "Tarrifs");
         }
     }
 }

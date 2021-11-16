@@ -37,5 +37,34 @@ namespace Playstation.WPF.Controls
             order_datagrid.ItemsSource = orders;
 
         }
+
+        private async void Delete_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = order_datagrid;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            int id = Convert.ToInt32(CellValue);
+
+            MessageBoxResult res = MessageBox.Show("Вы бы хотели его удалить?", "Information", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+
+
+            if (res == MessageBoxResult.Yes)
+            {
+
+                await orderService.DeleteOrder(id);
+
+                MessageBox.Show("Удалено");
+
+
+
+            }
+
+
+           orders  = await orderService.GetOrders();
+            order_datagrid.ItemsSource = orders;
+        }
     }
 }

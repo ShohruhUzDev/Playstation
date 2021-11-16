@@ -37,16 +37,33 @@ namespace Playstation.WPF.Controls
           
             
 
-            if (title_txt.Text!=""&&amount_txt.Text!=""&&totalminutes_txt.Text!=""&&int.TryParse(amount_txt.Text, out int amount)&&int.TryParse(totalminutes_txt.Text, out int minutes))
+            if (title_txt.Text!=""&&amount_txt.Text!=""&&totalminutes_txt.Text!=""&&int.TryParse(amount_txt.Text, out int amount)&&int.TryParse(totalminutes_txt.Text, out int minutes)
+               )
             {
-                Tarrif tarrif = new Tarrif()
+                if(viptype_rdbtn.IsChecked==true)
                 {
-                    Title=title_txt.Text,
-                    Amount=amount,
-                    TotalMinutes=minutes
-                };
-                await _tarrifService.CreateTarrif(tarrif);
-               
+                    Tarrif tarrif = new Tarrif()
+                    {
+                        Title = title_txt.Text,
+                        Amount = amount,
+                        TotalMinutes = minutes, 
+                        TarrifType=TarrifType.Vip
+                    };
+                    await _tarrifService.CreateTarrif(tarrif);
+                }
+                if (simpletype_rdbtn.IsChecked == true)
+                {
+                    Tarrif tarrif = new Tarrif()
+                    {
+                        Title = title_txt.Text,
+                        Amount = amount,
+                        TotalMinutes = minutes,
+                        TarrifType = TarrifType.Simple
+                    };
+                    await _tarrifService.CreateTarrif(tarrif);
+                }
+
+
                 var tarrifs = await _tarrifService.GetTarrifs();
 
                 TarrifControl.tarrif_datagrid.ItemsSource = tarrifs;

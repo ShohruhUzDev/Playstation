@@ -33,8 +33,8 @@ namespace Playstation.WPF.Services
         {
             using(var dbContext=new PlaystationDbContext())
             {
-                var order = dbContext.Orders.FindAsync(id);
-                dbContext.Remove(order);
+                var order = await dbContext.Orders.FindAsync(id);
+                dbContext.Orders.Remove(order);
                 await dbContext.SaveChangesAsync();
             }
            

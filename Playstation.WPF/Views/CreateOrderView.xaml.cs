@@ -23,6 +23,12 @@ namespace Playstation.WPF.Views
     /// </summary>
     public partial class CreateOrderView : Window
     {
+        public enum TarrifEnum
+        {
+            Vip,
+            Tarrif
+        }
+        public TarrifEnum tarrifEnum;
         ITarrifService tarrifService = new TarrifService();
         IDeviceService deviceService = new DeviceService();
         IOrderService orderService = new OrderService();
@@ -40,16 +46,24 @@ namespace Playstation.WPF.Views
             HomeControl = homeControl;
         }
 
-        private void tarrif_btn_Click(object sender, RoutedEventArgs e)
+        private  void tarrif_btn_Click(object sender, RoutedEventArgs e)
         {
+            tarrifEnum = TarrifEnum.Tarrif;
             time_grid.Visibility = Visibility.Visible;
             time_txt.Visibility = Visibility.Visible;
+
+           
+           
         }
 
-        private void vip_btn_Click(object sender, RoutedEventArgs e)
+        private  void vip_btn_Click(object sender, RoutedEventArgs e)
         {
+            tarrifEnum = TarrifEnum.Vip;
             time_grid.Visibility = Visibility.Visible;
             time_txt.Visibility = Visibility.Hidden;
+
+
+            
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -59,7 +73,7 @@ namespace Playstation.WPF.Views
 
 
             var tarrifs = await tarrifService.GetTarrifs();
-            foreach(var i in tarrifs)
+            foreach (var i in tarrifs)
             {
                 tarrifFors.Add(new TarrifForCBX()
                 {
@@ -70,6 +84,10 @@ namespace Playstation.WPF.Views
             tarrif_cbx.ItemsSource = tarrifFors;
             tarrif_cbx.DisplayMemberPath = "Name";
             tarrif_cbx.SelectedValuePath = "Id";
+        }
+        private void CreateOrder()
+        {
+
         }
 
         private async void Save_btn_Click(object sender, RoutedEventArgs e)
@@ -86,94 +104,168 @@ namespace Playstation.WPF.Views
             int startminute = DateTime.Now.Minute;
             string datestring = "";
 
-            int amountminute = Convert.ToInt32(time_txt.Text);
-
-            int endhour = amountminute / 60;
-            int endminute = amountminute % 60;
-
-            if(startminute+endminute>=60)
-            {
-                endhour = endhour + starthour + 1;
-                endminute = (startminute + endminute) % 60;
-
-              
-
-                if (endminute<10)
+           
+                Order order = new Order();
+                if (tarrifEnum == TarrifEnum.Tarrif)
                 {
-                    datestring = endhour.ToString() + ":" +"0"+ endminute.ToString();
+
+                if (int.TryParse(time_txt.Text, out int amountminute) && tarrif_cbx.SelectedIndex != -1)
+                {
+                    int endhour = amountminute / 60;
+                    int endminute = amountminute % 60;
+
+                    if (startminute + endminute >= 60)
+                    {
+                        endhour = endhour + starthour + 1;
+                        endminute = (startminute + endminute) % 60;
+
+
+
+                        if (endminute < 10)
+                        {
+                            datestring = endhour.ToString() + ":" + "0" + endminute.ToString();
+                        }
+                        else
+                        {
+                            datestring = endhour.ToString() + ":" + endminute.ToString();
+                        }
+                    }
+                    else
+                    {
+                        endhour = endhour + starthour;
+                        endminute = (startminute + endminute) % 60;
+                        if (endminute < 10)
+                        {
+                            datestring = endhour.ToString() + ":" + "0" + endminute.ToString();
+                        }
+                        else
+                        {
+                            datestring = endhour.ToString() + ":" + endminute.ToString();
+                        }
+                    }
+                    int amount = (int)((Convert.ToDouble(time_txt.Text) / 60) * tarrif.Amount);
+
+                    order = new Order()
+                    {
+                        DeviceId = id,
+                        StartTime = DateTime.Now,
+                        TarrifId = tarrifid,
+                        EndTime = DateTime.ParseExact(datestring, "HH:mm", null),
+                        Amount = amount,
+                        Closed = true
+
+
+                    };
+                   
                 }
                 else
                 {
-                    datestring = endhour.ToString() + ":" +  endminute.ToString();
+                    MessageBox.Show("Данные были введены неверно");
                 }
-            }
-            else
-            {
-                endhour = endhour + starthour ;
-                endminute = (startminute + endminute) % 60;
-                if (endminute < 10)
+
+                var neworder = await orderService.CreateOrder(order);
+
+
+                var homeorder = new OrderDevice()
                 {
-                    datestring = endhour.ToString() + ":" + "0" + endminute.ToString();
+                    Id = device.Id,
+                    Title = device.Title,
+                    StartTime = neworder.StartTime,
+                    EndTime = neworder.EndTime,
+                    OrderTarrif = tarrif.Title
+                };
+
+
+                var newordersedit = HomeControl.orders.ToList();
+
+
+                foreach (var i in newordersedit)
+                {
+                    if (i.Id == id)
+                    {
+                        i.StartTime = neworder.StartTime;
+                        i.EndTime = neworder.EndTime;
+                        i.Title = device.Title;
+                        i.OrderTarrif = tarrif.Title;
+
+                    }
+                }
+
+
+
+
+
+                HomeControl.home_datagrid.ItemsSource = newordersedit;
+
+            }
+           
+
+
+            if (tarrifEnum == TarrifEnum.Vip)
+            {
+                if (tarrif_cbx.SelectedIndex != -1)
+                {
+
+                    order = new Order()
+                    {
+                        DeviceId = id,
+                        StartTime = DateTime.Now,
+                        TarrifId = tarrifid,
+                        Closed = false
+                    };
+
                 }
                 else
                 {
-                    datestring = endhour.ToString() + ":" + endminute.ToString();
+                    MessageBox.Show("Данные были введены неверно");
                 }
+
+                var neworder = await orderService.CreateOrder(order);
+
+
+                var homeorder = new OrderDevice()
+                {
+                    Id = device.Id,
+                    Title = device.Title,
+                    StartTime = neworder.StartTime,
+                   
+                    OrderTarrif = tarrif.Title
+                };
+
+
+                var newordersedit = HomeControl.orders.ToList();
+
+
+                foreach (var i in newordersedit)
+                {
+                    if (i.Id == id)
+                    {
+                        i.StartTime = neworder.StartTime;
+                        
+                        i.Title = device.Title;
+                        i.OrderTarrif = tarrif.Title;
+
+                    }
+                }
+
+
+
+
+
+                HomeControl.home_datagrid.ItemsSource = newordersedit;
+
             }
-            double amount = (Convert.ToDouble(time_txt.Text) / 60) * tarrif.Amount;
-          
-            
-          
+           
         
 
-            var order = new Order()
-            {
-                DeviceId = id,
-              
-                StartTime = DateTime.Now,
-                TarrifId = tarrifid,
-               
-                EndTime = DateTime.ParseExact(datestring, "HH:mm", null),
-                Amount = amount,
-                Closed=false
-              
-                
-            };
-
-
-           var neworder= await orderService.CreateOrder(order);
-
-
-            var homeorder = new OrderDevice()
-            {
-               Id=device.Id,
-               Title=device.Title,
-               StartTime=neworder.StartTime,
-               EndTime=neworder.EndTime,
-               OrderTarrif=tarrif.Title
-            };
-            var newordersedit = HomeControl.orders.ToList();
-              
            
-            foreach(var i in newordersedit)
-            {
-                if(i.Id==id)
-                {
-                    i.StartTime = neworder.StartTime;
-                    i.EndTime = neworder.EndTime;
-                    i.Title = device.Title;
-                    i.OrderTarrif = tarrif.Title;
-
-                }
-            }
 
 
+          // var neworder= await orderService.CreateOrder(order);
 
 
+           
 
-            HomeControl.home_datagrid.ItemsSource= newordersedit;
-
-            var a = HomeControl.home_datagrid.row;
 
             this.Close();
             createbtn.IsEnabled = false;
@@ -185,7 +277,7 @@ namespace Playstation.WPF.Views
         
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
     }
 }
