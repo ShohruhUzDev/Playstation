@@ -27,9 +27,9 @@
                 <DataGridTextColumn Binding="{Binding DeviceTitle}" Header="Название устройства" Width="150" />
                 <DataGridTextColumn Binding="{Binding OrderTitle}" Header="Название тарифа" Width="150" />
                 <DataGridTextColumn Binding="{Binding Amount}" Header="Количество" Width="150" />
-                <DataGridTextColumn Binding="{Binding StartTime,  StringFormat='{}{0:HH:mm}'}" Header="Начальное время" Width="150" />
-                <DataGridTextColumn Binding="{Binding EndTime,  StringFormat='{}{0:HH:mm}'}" Header="Время окончания" Width="150" />
-                <!--<DataGridTemplateColumn Header="Действие" Width="400">
+                <DataGridTextColumn Binding="{Binding StartTime,  StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" Header="Начальное время" Width="150" />
+                <DataGridTextColumn Binding="{Binding EndTime,  StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" Header="Время окончания" Width="150" />
+                <DataGridTemplateColumn Header="Действие" Width="400">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel
@@ -62,7 +62,7 @@
                                     </StackPanel>
                                 </Button>
 
-                                --><!--<Button x:Name="Edit_btn"
+                                <Button x:Name="Edit_btn"
                                            Margin="0 0 10 0"
                                             Height="35"
                                             md:ShadowAssist.ShadowDepth="Depth4"
@@ -87,13 +87,13 @@
                                                                                                                 FontSize="18" 
                                                        />
                                     </StackPanel>
-                                </Button>--><!--
+                                </Button>
 
 
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
 
 
             </DataGrid.Columns>

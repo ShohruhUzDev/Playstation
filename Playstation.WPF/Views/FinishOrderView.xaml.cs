@@ -26,16 +26,16 @@ namespace Playstation.WPF.Views
         IOrderService orderService = new OrderService();
         IDeviceService deviceService = new DeviceService();
         ITarrifService tarrifService = new TarrifService();
-        public Button creaeButton;
+       
         public int _deviceid;
 
         public HomeControl HomeControl { get; }
 
-        public FinishOrderView(Button button, int devicid, HomeControl homeControl)
+        public FinishOrderView( int devicid, HomeControl homeControl)
         {
             _deviceid = devicid;
             HomeControl = homeControl;
-            creaeButton = button;
+           
             InitializeComponent();
         }
 

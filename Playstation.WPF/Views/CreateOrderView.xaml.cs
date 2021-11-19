@@ -33,16 +33,16 @@ namespace Playstation.WPF.Views
         IDeviceService deviceService = new DeviceService();
         IOrderService orderService = new OrderService();
         List<TarrifForCBX> tarrifFors = new List<TarrifForCBX>();
-        public Button createbtn;
+        
         public int id;
 
         public HomeControl HomeControl { get; }
 
-        public CreateOrderView(int id,Button button, HomeControl homeControl)
+        public CreateOrderView(int id, HomeControl homeControl)
         {
             InitializeComponent();
             this.id = id;
-            createbtn = button;
+           
             HomeControl = homeControl;
         }
 
@@ -226,7 +226,7 @@ namespace Playstation.WPF.Views
 
                
 
-
+                //home controllerdagi ordersni 
                 var newordersedit = HomeControl.orders.ToList();
 
 
@@ -305,17 +305,9 @@ namespace Playstation.WPF.Views
            
         
 
-           
-
-
-          // var neworder= await orderService.CreateOrder(order);
-
-
-           
-
 
             this.Close();
-            createbtn.IsEnabled = false;
+           
 
 
 

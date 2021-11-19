@@ -28,7 +28,7 @@ namespace Playstation.WPF.Controls
         IDeviceService _deviceService = new DeviceService();
         IOrderService _orderService = new OrderService();
         public   List<OrderDevice> orders = new List<OrderDevice>();
-        public Button CreateButton;
+       
         public int deviceId;
         public HomeControl()
         {
@@ -110,13 +110,7 @@ namespace Playstation.WPF.Controls
 
 
             home_datagrid.ItemsSource = orders;
-            for (int i = 0; i < home_datagrid.Items.Count; i++)
-            {
-                
-                DataGridRow row = (DataGridRow)home_datagrid.ItemContainerGenerator
-                                                           .ContainerFromIndex(i);
-               // row.Visibility=Visibility.Hidden;
-            }
+           
 
         }
 
@@ -129,9 +123,9 @@ namespace Playstation.WPF.Controls
 
             deviceId = Convert.ToInt32(CellValue);
 
-            CreateButton = (Button)sender;
+           
 
-            CreateOrderView createOrder = new CreateOrderView(deviceId, (Button)sender, this);
+            CreateOrderView createOrder = new CreateOrderView(deviceId,  this);
             createOrder.ShowDialog();
 
         }
@@ -145,7 +139,7 @@ namespace Playstation.WPF.Controls
             string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
             deviceId = Convert.ToInt32(CellValue);
-            FinishOrderView finishOrderView = new FinishOrderView(CreateButton, deviceId, this);
+            FinishOrderView finishOrderView = new FinishOrderView( deviceId, this);
             finishOrderView.ShowDialog();
           
         }
