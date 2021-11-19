@@ -24,7 +24,7 @@
                       BorderBrush="Black" >
             <DataGrid.Columns>
                 <DataGridTextColumn  Binding="{Binding Id}" Header="Код" Width="80" />
-                <DataGridTextColumn Binding="{Binding Title}" Header="название устройство" Width="200" />
+                <DataGridTextColumn Binding="{Binding Title}" Header="Название устройство" Width="200" />
                 <DataGridTextColumn Binding="{Binding StartTime, StringFormat='{}{0:HH:mm}'}" Header="Начальное время" Width="170" />
                 <DataGridTextColumn Binding="{Binding EndTime, StringFormat='{}{0:HH:mm}'}" Header="Время окончания" Width="170" />
                 <DataGridTextColumn Binding="{Binding OrderTarrif}" Header="Тариф" Width="150" />
@@ -92,6 +92,7 @@
 
                                 <Button x:Name="Edit_btn"
                                              Margin="0 0 10 0"
+                                        Click="Edit_btn_Click"
                                             Height="40"
                                             md:ShadowAssist.ShadowDepth="Depth4"
                                             Background="#0BB1D2"

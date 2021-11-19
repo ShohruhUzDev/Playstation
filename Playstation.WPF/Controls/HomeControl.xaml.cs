@@ -69,6 +69,7 @@ namespace Playstation.WPF.Controls
                                 StartTime = deviceorder.StartTime,
                                 EndTime=deviceorder.EndTime,
                                 OrderTarrif = deviceorder.Tarrif.Title
+                                
                             });
                         }
                         else
@@ -81,6 +82,7 @@ namespace Playstation.WPF.Controls
                                     Title = i.Title,
                                     StartTime = deviceorder.StartTime,
                                     OrderTarrif = deviceorder.Tarrif.Title
+                                   
                                 });
                             }
                            
@@ -96,6 +98,7 @@ namespace Playstation.WPF.Controls
                             Title = i.Title,
                             StartTime=DateTime.Now,
                             OrderTarrif = null
+                           
                         });
                     }
                 }
@@ -104,7 +107,16 @@ namespace Playstation.WPF.Controls
                 
 
             }
+
+
             home_datagrid.ItemsSource = orders;
+            for (int i = 0; i < home_datagrid.Items.Count; i++)
+            {
+                
+                DataGridRow row = (DataGridRow)home_datagrid.ItemContainerGenerator
+                                                           .ContainerFromIndex(i);
+               // row.Visibility=Visibility.Hidden;
+            }
 
         }
 
@@ -133,9 +145,23 @@ namespace Playstation.WPF.Controls
             string CellValue = ((TextBlock)RowAndColumn.Content).Text;
 
             deviceId = Convert.ToInt32(CellValue);
-            FinishOrderView finishOrderView = new FinishOrderView(CreateButton, deviceId);
+            FinishOrderView finishOrderView = new FinishOrderView(CreateButton, deviceId, this);
             finishOrderView.ShowDialog();
           
+        }
+
+        private  void Edit_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DataGrid dataGrid = home_datagrid;
+            DataGridRow Row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+            DataGridCell RowAndColumn = (DataGridCell)dataGrid.Columns[0].GetCellContent(Row).Parent;
+            string CellValue = ((TextBlock)RowAndColumn.Content).Text;
+
+            deviceId = Convert.ToInt32(CellValue);
+
+
+            UpdateOrderView updateOrder = new UpdateOrderView(deviceId, this);
+            updateOrder.ShowDialog();
         }
     }
 }

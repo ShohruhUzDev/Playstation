@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Playstation.WPF.Migrations
 {
-    public partial class initial : Migration
+    public partial class addminutetoorder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,9 +45,10 @@ namespace Playstation.WPF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
                     Closed = table.Column<bool>(type: "bit", nullable: false),
                     DeviceId = table.Column<int>(type: "int", nullable: false),
+                    Minute = table.Column<int>(type: "int", nullable: false),
                     TarrifId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

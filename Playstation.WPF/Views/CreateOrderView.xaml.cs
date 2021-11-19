@@ -68,27 +68,76 @@ namespace Playstation.WPF.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            time_grid.Visibility = Visibility.Hidden;
 
+            var orders = await orderService.GetOrders();
+            var iforder = orders.OrderByDescending(x => x.StartTime).FirstOrDefault(i => i.DeviceId == id);
 
-
-            var tarrifs = await tarrifService.GetTarrifs();
-            foreach (var i in tarrifs)
+            if(iforder is not null)
             {
-                tarrifFors.Add(new TarrifForCBX()
+                if (iforder.Closed)
                 {
-                    Id = i.Id,
-                    Name = i.Title
-                });
+                    MessageBox.Show("У этого устройства есть заказ. Вы не можете создать заказ");
+                    this.Close();
+                }
+                else
+                {
+
+                    time_grid.Visibility = Visibility.Hidden;
+
+
+
+                    var tarrifs = await tarrifService.GetTarrifs();
+                    foreach (var i in tarrifs)
+                    {
+                        tarrifFors.Add(new TarrifForCBX()
+                        {
+                            Id = i.Id,
+                            Name = i.Title
+                        });
+                    }
+                    tarrif_cbx.ItemsSource = tarrifFors;
+                    tarrif_cbx.DisplayMemberPath = "Name";
+                    tarrif_cbx.SelectedValuePath = "Id";
+
+
+
+                    //amount textblock is visible false
+                    amount_txt.Visibility = Visibility.Hidden;
+
+                    Save_btn.IsEnabled = false;
+                }
             }
-            tarrif_cbx.ItemsSource = tarrifFors;
-            tarrif_cbx.DisplayMemberPath = "Name";
-            tarrif_cbx.SelectedValuePath = "Id";
-        }
-        private void CreateOrder()
-        {
+           else
+            {
+                time_grid.Visibility = Visibility.Hidden;
+
+
+
+                var tarrifs = await tarrifService.GetTarrifs();
+                foreach (var i in tarrifs)
+                {
+                    tarrifFors.Add(new TarrifForCBX()
+                    {
+                        Id = i.Id,
+                        Name = i.Title
+                    });
+                }
+                tarrif_cbx.ItemsSource = tarrifFors;
+                tarrif_cbx.DisplayMemberPath = "Name";
+                tarrif_cbx.SelectedValuePath = "Id";
+
+
+
+                //amount textblock is visible false
+                amount_txt.Visibility = Visibility.Hidden;
+
+                Save_btn.IsEnabled = false;
+            }
+            
+
 
         }
+      
 
         private async void Save_btn_Click(object sender, RoutedEventArgs e)
         {
@@ -104,7 +153,11 @@ namespace Playstation.WPF.Views
             int startminute = DateTime.Now.Minute;
             string datestring = "";
 
-           
+            Order neworder = new Order();
+
+
+
+
                 Order order = new Order();
                 if (tarrifEnum == TarrifEnum.Tarrif)
                 {
@@ -143,7 +196,7 @@ namespace Playstation.WPF.Views
                             datestring = endhour.ToString() + ":" + endminute.ToString();
                         }
                     }
-                    int amount = (int)((Convert.ToDouble(time_txt.Text) / 60) * tarrif.Amount);
+                    int amount = (int)((Convert.ToDouble(amountminute) / 60) * tarrif.Amount);
 
                     order = new Order()
                     {
@@ -152,28 +205,26 @@ namespace Playstation.WPF.Views
                         TarrifId = tarrifid,
                         EndTime = DateTime.ParseExact(datestring, "HH:mm", null),
                         Amount = amount,
+                        Minute=amountminute,
                         Closed = true
 
 
                     };
-                   
+
+
+                   neworder = await orderService.CreateOrder(order);
                 }
                 else
                 {
                     MessageBox.Show("Данные были введены неверно");
+                    tarrif_cbx.SelectedIndex = -1;
+                    time_txt.Text = "";
                 }
 
-                var neworder = await orderService.CreateOrder(order);
+               
 
 
-                var homeorder = new OrderDevice()
-                {
-                    Id = device.Id,
-                    Title = device.Title,
-                    StartTime = neworder.StartTime,
-                    EndTime = neworder.EndTime,
-                    OrderTarrif = tarrif.Title
-                };
+               
 
 
                 var newordersedit = HomeControl.orders.ToList();
@@ -211,26 +262,22 @@ namespace Playstation.WPF.Views
                         DeviceId = id,
                         StartTime = DateTime.Now,
                         TarrifId = tarrifid,
-                        Closed = false
+                        Closed = true
                     };
 
+                    neworder= await orderService.CreateOrder(order);
                 }
                 else
                 {
                     MessageBox.Show("Данные были введены неверно");
+                    tarrif_cbx.SelectedIndex = -1;
+                    time_txt.Text = "";
                 }
 
-                var neworder = await orderService.CreateOrder(order);
+               
 
 
-                var homeorder = new OrderDevice()
-                {
-                    Id = device.Id,
-                    Title = device.Title,
-                    StartTime = neworder.StartTime,
-                   
-                    OrderTarrif = tarrif.Title
-                };
+               
 
 
                 var newordersedit = HomeControl.orders.ToList();
@@ -278,6 +325,49 @@ namespace Playstation.WPF.Views
         private void Cancel_btn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private async void time_txt_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int amount;
+           if(int.TryParse(tarrif_cbx.SelectedValue.ToString(), out int tarrifid)&& int.TryParse(time_txt.Text, out int time))
+            {
+                var tarrif = await tarrifService.GetByIdTarrif(tarrifid);
+
+                amount = (int)((double)(tarrif.Amount/60) * time);
+
+                amount_txt.Text = "Итого=" + amount.ToString();
+                amount_txt.Visibility = Visibility.Visible;
+
+                Save_btn.IsEnabled = true;
+
+
+            }
+           else
+            {
+                amount_txt.Visibility = Visibility.Hidden;
+                Save_btn.IsEnabled = false;
+            }
+
+          
+
+
+
+
+          
+        }
+
+        private async void tarrif_cbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool b = int.TryParse(tarrif_cbx.SelectedValue.ToString(), out int tarrifid);
+
+            var tarrif = await tarrifService.GetByIdTarrif(tarrifid);
+
+            if(tarrif.TarrifType==TarrifType.Vip)
+            {
+                Save_btn.IsEnabled = true;
+            }
+
         }
     }
 }

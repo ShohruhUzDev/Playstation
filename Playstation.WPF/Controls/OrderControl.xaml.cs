@@ -24,7 +24,7 @@ namespace Playstation.WPF.Controls
     public partial class OrderControl : UserControl
     {
         IOrderService orderService = new OrderService();
-        IEnumerable<Order> orders = new List<Order>();
+        List<OrderShow> orderShow = new List<OrderShow>();
 
         public OrderControl()
         {
@@ -33,8 +33,23 @@ namespace Playstation.WPF.Controls
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            orders = await orderService.GetOrders();
-            order_datagrid.ItemsSource = orders;
+           var orders = await orderService.GetOrders();
+
+
+            foreach(var i in orders)
+            {
+                orderShow.Add(new OrderShow()
+                {
+                    Id = i.Id,
+                    DeviceTitle = i.Device.Title,
+                    OrderTitle = i.Tarrif.Title,
+                    StartTime = i.StartTime,
+                    EndTime = i.EndTime,
+                    Amount = i.Amount
+                });
+
+            }
+            order_datagrid.ItemsSource = orderShow;
 
         }
 
@@ -56,15 +71,29 @@ namespace Playstation.WPF.Controls
 
                 await orderService.DeleteOrder(id);
 
-                MessageBox.Show("Удалено");
+               // MessageBox.Show("Удалено");
 
 
 
             }
 
 
-           orders  = await orderService.GetOrders();
-            order_datagrid.ItemsSource = orders;
+          var orders  = await orderService.GetOrders();
+            foreach (var i in orders)
+            {
+                orderShow.Add(new OrderShow()
+                {
+                    Id = i.Id,
+                    DeviceTitle = i.Device.Title,
+                    OrderTitle = i.Tarrif.Title,
+                    StartTime = i.StartTime,
+                    EndTime = i.EndTime,
+                    Amount = i.Amount
+                });
+
+            }
+            order_datagrid.ItemsSource = orderShow;
+            
         }
     }
 }

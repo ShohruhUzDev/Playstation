@@ -10,8 +10,8 @@ using Playstation.WPF.Context;
 namespace Playstation.WPF.Migrations
 {
     [DbContext(typeof(PlaystationDbContext))]
-    [Migration("20211116135625_dfjalksdfjlaksdjf")]
-    partial class dfjalksdfjlaksdjf
+    [Migration("20211118090419_addminutetoorder")]
+    partial class addminutetoorder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,9 @@ namespace Playstation.WPF.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Minute")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");

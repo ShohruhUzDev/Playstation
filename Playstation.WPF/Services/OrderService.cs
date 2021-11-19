@@ -72,7 +72,9 @@ namespace Playstation.WPF.Services
                 dbContext.Entry(order).Property(p => p.StartTime).IsModified = true;
                 dbContext.Entry(order).Property(p => p.EndTime).IsModified = true;
                 dbContext.Entry(order).Property(p => p.Amount).IsModified = true;
-              
+                dbContext.Entry(order).Property(p => p.Minute).IsModified = true;
+                dbContext.Entry(order).Property(p => p.Closed).IsModified = true;
+
 
 
 

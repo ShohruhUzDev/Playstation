@@ -9,6 +9,7 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Normal"
         Loaded="Window_Loaded"
+        Closed="Window_Closed"
         WindowStyle="ToolWindow" 
         Width="600"
         Height="400"
@@ -38,7 +39,7 @@
                  Width="350"
                  HorizontalAlignment="Left"
                  FontSize="15"
-               
+                IsReadOnly="True"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  md:HintAssist.Hint="Название устройство"
                  
@@ -49,7 +50,7 @@
             x:Name="amount_txt"
                   Grid.Row="2"
                  Height="45"
-                 
+                  IsReadOnly="True"
                  Width="350"
                  HorizontalAlignment="Left"
                  FontSize="15"
@@ -58,6 +59,7 @@
                  Margin="15 2" />
        
         <TextBox x:Name="totalminutes_txt"
+                 IsReadOnly="True"
                  Grid.Row="3"
                  Height="45"
                  Width="350"

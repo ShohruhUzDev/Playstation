@@ -40,7 +40,7 @@
                         Height="35"
                         Width="35"/>
                     <TextBlock
-                        Text="глвная"
+                        Text="Главная"
                         Margin="1 0 55 0" 
                         VerticalAlignment="Bottom"
                         Foreground=" Black"
@@ -96,7 +96,7 @@
                         Height="35"
                         Width="35"/>
                     <TextBlock
-                        Text="устройства"
+                        Text="Устройство"
                         Margin="1 0 55 0" 
                         VerticalAlignment="Bottom"
                         Foreground=" Black"
@@ -123,7 +123,7 @@
                         Height="35"
                         Width="35"/>
                     <TextBlock
-                        Text="отчет"
+                        Text="Отчет"
                         Margin="1 0 55 0" 
                         VerticalAlignment="Bottom"
                         Foreground=" Black"

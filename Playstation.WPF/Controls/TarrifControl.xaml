@@ -45,7 +45,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn  Binding="{Binding Id}" Header="Код" Width="80" />
                     <DataGridTextColumn Binding="{Binding Title}" Header="Название тарифа" Width="170" />
-                    <DataGridTextColumn Binding="{Binding TarrifType}" Header="Тип тарифа" Width="100" />
+                    <DataGridTextColumn Binding="{Binding TarrifType}" Header="Тип тарифа" Width="150" />
                     <DataGridTextColumn Binding="{Binding Amount}" Header="Тарифная цена" Width="150" />
                     <DataGridTextColumn Binding="{Binding TotalMinutes}" Header="Тарифное время" Width="150" />
                     <DataGridTemplateColumn Header="Действие" Width="400">

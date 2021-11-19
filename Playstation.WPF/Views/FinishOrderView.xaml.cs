@@ -1,4 +1,5 @@
-﻿using Playstation.WPF.Interfaces;
+﻿using Playstation.WPF.Controls;
+using Playstation.WPF.Interfaces;
 using Playstation.WPF.Models;
 using Playstation.WPF.Services;
 using System;
@@ -27,9 +28,13 @@ namespace Playstation.WPF.Views
         ITarrifService tarrifService = new TarrifService();
         public Button creaeButton;
         public int _deviceid;
-        public FinishOrderView(Button button, int devicid)
+
+        public HomeControl HomeControl { get; }
+
+        public FinishOrderView(Button button, int devicid, HomeControl homeControl)
         {
             _deviceid = devicid;
+            HomeControl = homeControl;
             creaeButton = button;
             InitializeComponent();
         }
@@ -40,82 +45,92 @@ namespace Playstation.WPF.Views
             var orders = await orderService.GetOrders();
             var neworders = orders.OrderByDescending(x => x.StartTime).FirstOrDefault(i => i.DeviceId == _deviceid);
 
-
-            int minute;
-            if (neworders.Tarrif.TarrifType == TarrifType.Simple)
+            if(neworders is null)
             {
-                if (neworders.EndTime.Minute >= neworders.StartTime.Minute)
+                this.Close();
+            }
+            else
+            {
+                int minute;
+                if (neworders.Tarrif.TarrifType == TarrifType.Simple)
                 {
-                    minute = neworders.EndTime.Minute - neworders.StartTime.Minute;
+
+
+                    int amount = (int)((Convert.ToDouble(neworders.Minute) / 60) * neworders.Tarrif.Amount);
+
+                    var updateorder = new Order()
+                    {
+                        Id = neworders.Id,
+                        Amount = neworders.Amount,
+                        Closed = false
+
+                    };
+
+
+                    await orderService.UpdateOrder(updateorder);
+
                 }
-                else
+
+
+                if (neworders.Tarrif.TarrifType == TarrifType.Vip)
                 {
-                    minute = neworders.EndTime.Minute + 60 - neworders.StartTime.Minute;
+
+                    var nowdatetime = DateTime.Now.Hour;
+                    if (DateTime.Now.Minute >= neworders.StartTime.Minute)
+                    {
+                        minute = DateTime.Now.Minute - neworders.StartTime.Minute;
+                    }
+                    else
+                    {
+                        minute = DateTime.Now.Minute + 60 - neworders.StartTime.Minute;
+                        nowdatetime = DateTime.Now.Hour - 1;
+                    }
+
+                    //hour
+                    if (nowdatetime > neworders.StartTime.Hour)
+                    {
+                        minute = (nowdatetime - neworders.StartTime.Hour) * 60 + minute;
+                    }
+
+                    int amount = (int)((Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
+
+
+                    var updateorder = new Order()
+                    {
+                        Id = neworders.Id,
+                        StartTime = neworders.StartTime,
+                        Amount = amount,
+                        TarrifId = neworders.TarrifId,
+                        DeviceId = neworders.DeviceId,
+                        EndTime = DateTime.Now,
+                        Minute = minute,
+                        Closed = false
+
+                    };
+
+
+                    await orderService.UpdateOrder(updateorder);
+
                 }
 
-                //hour
-                if (neworders.EndTime.Hour > neworders.StartTime.Hour)
+
+                var newordersedit = HomeControl.orders.ToList();
+
+                foreach (var i in newordersedit)
                 {
-                    minute = (neworders.EndTime.Hour - neworders.StartTime.Hour) * 60 + minute;
+
+                    if (i.Id == _deviceid)
+                    {
+                        i.StartTime = DateTime.Now;
+                        i.OrderTarrif = null;
+                        i.EndTime = DateTime.ParseExact("00:00", "HH:mm", null);
+
+                    }
                 }
+                HomeControl.home_datagrid.ItemsSource = newordersedit;
 
-                int amount = (int)((Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
-
-                var updateorder = new Order()
-                {
-                    Id = neworders.Id,
-                    Closed = false
-
-                };
-
-
-                await orderService.UpdateOrder(updateorder);
 
             }
-
-
-            if (neworders.Tarrif.TarrifType == TarrifType.Vip)
-            {
-
-                var nowdatetime = DateTime.Now.Hour;
-                if (DateTime.Now.Minute >= neworders.StartTime.Minute)
-                {
-                    minute = DateTime.Now.Minute - neworders.StartTime.Minute;
-                }
-                else
-                {
-                    minute = DateTime.Now.Minute + 60 - neworders.StartTime.Minute;                    nowdatetime= DateTime.Now.Hour-1;                }
-
-                //hour
-                if (nowdatetime > neworders.StartTime.Hour)
-                {
-                    minute = (nowdatetime - neworders.StartTime.Hour) * 60 + minute;
-                }
-
-                int amount = (int)((Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
-
-
-                var updateorder = new Order()
-                {
-                    Id = neworders.Id,
-                    StartTime = neworders.StartTime,
-                    Amount = amount,
-                    TarrifId = neworders.TarrifId,
-                    DeviceId = neworders.DeviceId,
-                    EndTime = DateTime.Now,
-                    Closed = false
-
-                };
-
-
-                await orderService.UpdateOrder(updateorder);
-
-            }
-
-
-
-
-
 
 
 
@@ -129,87 +144,80 @@ namespace Playstation.WPF.Views
             
             var orders = await orderService.GetOrders();
             var neworders= orders.OrderByDescending(x=>x.StartTime).FirstOrDefault(i=>i.DeviceId== _deviceid);
-            
-            if(neworders.Tarrif.TarrifType==TarrifType.Simple)
+
+
+
+            if (neworders is not null&& neworders.Closed)
             {
-                int minute;
-
-                //minute
-                if (neworders.EndTime.Minute >= neworders.StartTime.Minute)
-                {
-                    minute = neworders.EndTime.Minute - neworders.StartTime.Minute;
-                }
-                else
-                {
-                    minute = neworders.EndTime.Minute + 60 - neworders.StartTime.Minute;
-                }
-
-                //hour
-                if (neworders.EndTime.Hour > neworders.StartTime.Hour)
-                {
-                    minute = (neworders.EndTime.Hour - neworders.StartTime.Hour) * 60 + minute;
-                }
-
-
-
-
-                if (neworders != null)
+                if (neworders.Tarrif.TarrifType == TarrifType.Simple)
                 {
                     titleDevice_txt.Text = neworders.Device.Title;
                     amount_txt.Text = neworders.Amount.ToString();
-                    totalminutes_txt.Text = minute.ToString();
+                    totalminutes_txt.Text = neworders.Minute.ToString();
                 }
+
+                if (neworders.Tarrif.TarrifType == TarrifType.Vip)
+                {
+                    int minute;
+
+                    //minute
+                    if (DateTime.Now.Minute >= neworders.StartTime.Minute)
+                    {
+                        minute = DateTime.Now.Minute - neworders.StartTime.Minute;
+                    }
+                    else
+                    {
+                        minute = DateTime.Now.Minute + 60 - neworders.StartTime.Minute;
+                    }
+
+                    //hour
+                    if (DateTime.Now.Hour > neworders.StartTime.Hour)
+                    {
+                        minute = (DateTime.Now.Hour - neworders.StartTime.Hour) * 60 + minute;
+                    }
+
+                    int amount = (int)((Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
+
+
+                    if (neworders != null)
+                    {
+                        titleDevice_txt.Text = neworders.Device.Title;
+                        amount_txt.Text = amount.ToString();
+                        totalminutes_txt.Text = minute.ToString();
+                    }
+                }
+
+
             }
 
-
-            if (neworders.Tarrif.TarrifType == TarrifType.Vip)
+            else
             {
-                int minute;
 
-                //minute
-                if (DateTime.Now.Minute >= neworders.StartTime.Minute)
-                {
-                    minute = DateTime.Now.Minute - neworders.StartTime.Minute;
-                }
-                else
-                {
-                    minute = DateTime.Now.Minute + 60 - neworders.StartTime.Minute;
-                }
-
-                //hour
-                if (DateTime.Now.Hour > neworders.StartTime.Hour)
-                {
-                    minute = (DateTime.Now.Hour - neworders.StartTime.Hour) * 60 + minute;
-                }
-
-                int amount =(int)( (Convert.ToDouble(minute) / 60) * neworders.Tarrif.Amount);
-
-
-
-                //var updateorder = new Order()
-                //{
-                //    Id = neworders.Id,
-                //    StartTime = neworders.StartTime,
-                //    Amount = amount,
-                //    TarrifId = neworders.TarrifId,
-                //    DeviceId = neworders.DeviceId,
-                //    EndTime = DateTime.Now,
-                //    Closed = false
-
-                //};
-
-
-                //await orderService.UpdateOrder(updateorder);
-
-
-                if (neworders != null)
-                {
-                    titleDevice_txt.Text = neworders.Device.Title;
-                    amount_txt.Text = amount.ToString();
-                    totalminutes_txt.Text = minute.ToString();
-                }
+                titleDevice_txt.Text = "";
+                amount_txt.Text = "";
+                totalminutes_txt.Text = "";
             }
 
+
+
+
+
+
+
+
+
+        
+
+           
+
+
+          
+
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
