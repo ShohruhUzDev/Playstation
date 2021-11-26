@@ -27,8 +27,8 @@
                 <DataGridTextColumn Binding="{Binding DeviceTitle}" Header="Название устройства" Width="150" />
                 <DataGridTextColumn Binding="{Binding OrderTitle}" Header="Название тарифа" Width="150" />
                 <DataGridTextColumn Binding="{Binding Amount}" Header="Количество" Width="150" />
-                <DataGridTextColumn Binding="{Binding StartTime,  StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" Header="Начальное время" Width="150" />
-                <DataGridTextColumn Binding="{Binding EndTime,  StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" Header="Время окончания" Width="150" />
+                <DataGridTextColumn Binding="{Binding StartTime,  StringFormat=\{0:dd.MM.yy HH:mm\}}" Header="Начальное время" Width="150" />
+                <DataGridTextColumn Binding="{Binding EndTime,  StringFormat=\{0:dd.MM.yy HH:mm\}}" Header="Время окончания" Width="150" />
                 <DataGridTemplateColumn Header="Действие" Width="400">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

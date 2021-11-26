@@ -1,4 +1,5 @@
-﻿using Playstation.WPF.Controls;
+﻿using Playstation.WPF.AdbManager;
+using Playstation.WPF.Controls;
 using Playstation.WPF.Interfaces;
 using Playstation.WPF.Models;
 using Playstation.WPF.Services;
@@ -128,11 +129,35 @@ namespace Playstation.WPF.Views
                     }
                 }
                 HomeControl.home_datagrid.ItemsSource = newordersedit;
+                List<MyDevice> myDevices = new List<MyDevice>();
+
+
+                MyAdbManager myAdb = new MyAdbManager();
+                myDevices = myAdb.GetDevices();
+
+                     
+               foreach (var item in myDevices)
+                {
+                      if (item.Serial == neworders.Device.IpAddress + ":5555")
+                                {
+
+                                    MyDevice myDevice = new MyDevice(item.Serial);
+                                    myDevice.ExecuteShellCommand($"-s {item.Serial} reboot");
+                                    // myDevice.ExecuteShellCommand($"-s {item.Serial} shell input keyevent 26");
+
+
+                                }          
+               }
+
+                        
+                    
+
+                
 
 
             }
 
-
+            
 
             // creaeButton.IsEnabled = true;
             this.Close();

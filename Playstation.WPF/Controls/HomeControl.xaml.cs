@@ -1,4 +1,5 @@
-﻿using Playstation.WPF.Interfaces;
+﻿using Playstation.WPF.AdbManager;
+using Playstation.WPF.Interfaces;
 using Playstation.WPF.Models;
 using Playstation.WPF.Services;
 using Playstation.WPF.Views;
@@ -33,8 +34,50 @@ namespace Playstation.WPF.Controls
         public HomeControl()
         {
             InitializeComponent();
+            Task.Run(async () => await Loop());
         }
 
+        //adb manager
+        public async Task Loop()
+        {
+            List<MyDevice> myDevices = new List<MyDevice>();
+
+            while (true)
+            {
+                await Task.Delay(15000);
+              
+                MyAdbManager myAdb = new MyAdbManager();
+                myDevices = myAdb.GetDevices();
+
+                foreach (var i in orders)
+                {
+                    if (i.EndTime.Hour.ToString() != "00" && i.EndTime.Minute.ToString() != "00")
+                    {
+                        if (i.EndTime < DateTime.Now)
+                        {
+
+                            foreach (var item in myDevices)
+                            {
+                                if (item.Serial == (i.DevieIpAdress + ":5555"))
+                                {
+
+                                    MyDevice myDevice = new MyDevice(item.Serial);
+                                    myDevice.ExecuteShellCommand($"-s {item.Serial} reboot");
+                                    // myDevice.ExecuteShellCommand($"-s {item.Serial} shell input keyevent 26");
+
+
+                                }
+                            }
+
+                        }
+                    }
+                    
+                }
+
+
+               
+            }
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             var devices = await _deviceService.GetDevices();
@@ -53,7 +96,8 @@ namespace Playstation.WPF.Controls
                         Id = i.Id,
                         Title = i.Title,
                         StartTime=DateTime.Now,
-                        OrderTarrif = null
+                        OrderTarrif = null, 
+                        DevieIpAdress=i.IpAddress
                     });
                 }
                 else
@@ -68,8 +112,9 @@ namespace Playstation.WPF.Controls
                                 Title = i.Title,
                                 StartTime = deviceorder.StartTime,
                                 EndTime=deviceorder.EndTime,
-                                OrderTarrif = deviceorder.Tarrif.Title
-                                
+                                OrderTarrif = deviceorder.Tarrif.Title,
+                                DevieIpAdress = deviceorder.Device.IpAddress
+
                             });
                         }
                         else
@@ -81,8 +126,9 @@ namespace Playstation.WPF.Controls
                                     Id = i.Id,
                                     Title = i.Title,
                                     StartTime = deviceorder.StartTime,
-                                    OrderTarrif = deviceorder.Tarrif.Title
-                                   
+                                    OrderTarrif = deviceorder.Tarrif.Title,
+                                    DevieIpAdress = deviceorder.Device.IpAddress
+
                                 });
                             }
                            
@@ -97,8 +143,9 @@ namespace Playstation.WPF.Controls
                             Id = i.Id,
                             Title = i.Title,
                             StartTime=DateTime.Now,
-                            OrderTarrif = null
-                           
+                            OrderTarrif = null,
+                            DevieIpAdress = deviceorder.Device.IpAddress
+
                         });
                     }
                 }

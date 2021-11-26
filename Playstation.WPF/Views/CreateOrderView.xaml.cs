@@ -4,6 +4,7 @@ using Playstation.WPF.Models;
 using Playstation.WPF.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -219,6 +220,9 @@ namespace Playstation.WPF.Views
                     MessageBox.Show("Данные были введены неверно");
                     tarrif_cbx.SelectedIndex = -1;
                     time_txt.Text = "";
+                   
+                   
+
                 }
 
                
@@ -247,6 +251,15 @@ namespace Playstation.WPF.Views
 
 
                 HomeControl.home_datagrid.ItemsSource = newordersedit;
+
+
+
+
+
+                // adb test
+                
+
+
 
             }
            
