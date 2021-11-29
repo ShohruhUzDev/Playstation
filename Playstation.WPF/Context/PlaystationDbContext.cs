@@ -22,7 +22,9 @@ namespace Playstation.WPF.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server =(localdb)\MSSQLLocalDB; Database = plays; Trusted_Connection = True; ");
+            optionsBuilder.UseMySql("Server = localhost; port = 3306; Database = SparTestDb; Uid = root; Pwd = root ", new MySqlServerVersion(new Version(8, 0, 18)), enable =>enable.EnableRetryOnFailure());
+
+           // optionsBuilder.UseSqlServer(@"Server =(localdb)\MSSQLLocalDB; Database = plays; Trusted_Connection = True; ");
             //, new MySqlServerVersion(new Version(5, 0, 2))
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

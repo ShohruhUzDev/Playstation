@@ -138,15 +138,15 @@ namespace Playstation.WPF.Views
                      
                foreach (var item in myDevices)
                 {
-                      if (item.Serial == neworders.Device.IpAddress + ":5555")
-                                {
+                    if (item.Serial == neworders.Device.IpAddress + ":5555")
+                    {
 
-                                    MyDevice myDevice = new MyDevice(item.Serial);
-                                    myDevice.ExecuteShellCommand($"-s {item.Serial} reboot");
-                                    // myDevice.ExecuteShellCommand($"-s {item.Serial} shell input keyevent 26");
+                        MyDevice myDevice = new MyDevice(item.Serial);
+                        myDevice.ExecuteShellCommand($"-s {item.Serial} reboot");
+                     // myDevice.ExecuteShellCommand($"-s {item.Serial} shell input keyevent 26");
+           
 
-
-                                }          
+                    }          
                }
 
                         
