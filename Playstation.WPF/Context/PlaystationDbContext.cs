@@ -18,13 +18,13 @@ namespace Playstation.WPF.Context
         public DbSet<Device> Devices { get; set; }
         public DbSet<Tarrif> Tarrifs { get; set; }
 
-        private const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=plays;Trusted_Connection=True;";
+        private const string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=plays;Trusted_Connection=True;";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("Server = localhost; port = 3306; Database = SparTestDb; Uid = root; Pwd = root ", new MySqlServerVersion(new Version(8, 0, 18)), enable =>enable.EnableRetryOnFailure());
+            //optionsBuilder.UseMySql("Server = localhost; port = 3306; Database = SparTestDb; Uid = root; Pwd = root ", new MySqlServerVersion(new Version(8, 0, 18)), enable =>enable.EnableRetryOnFailure());
 
-           // optionsBuilder.UseSqlServer(@"Server =(localdb)\MSSQLLocalDB; Database = plays; Trusted_Connection = True; ");
+            optionsBuilder.UseSqlServer(@"Server =(localdb)\MSSQLLocalDB; Database = plays; Trusted_Connection = True; ");
             //, new MySqlServerVersion(new Version(5, 0, 2))
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
